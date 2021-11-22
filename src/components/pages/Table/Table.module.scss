@@ -1,0 +1,64 @@
+@import "../../../styles/variables.scss";
+
+body {
+  background-color: lightgray;
+}
+
+hr {
+  display: block;
+  height: 1px;
+  border: 0;
+  border-top: 3px solid rgb(156, 156, 156);
+  margin: auto;
+  padding: 0;
+  width: 700px;
+}
+
+.svgContainer {
+  align-self: center;
+  width: 4vh;
+  height: 4vh;
+}
+
+.outerContainer {
+  display:flex;
+  flex-direction: column; 
+  justify-content: center;
+  margin-top: 100px;
+}
+
+.titlesContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &__title {
+    color: map-get($colors, primary);
+    font-size: 3rem;
+    font-weight: 600;
+
+    &:not(:last-child) {
+      margin-right: 75px;
+    }
+  }
+}
+
+.historyContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 20px;
+  
+  &__date {
+    font-size: 2rem;
+    font-weight: 600;
+  }
+
+  &__status {
+    margin: 0 90px 0 90px;
+  }
+
+  &__svgWrapper {
+    margin-right: 20px;
+  }
+}

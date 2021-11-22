@@ -1,0 +1,59 @@
+@import "../../../styles/variables.scss";
+
+body {
+  background-color: lightgray;
+}
+
+.outerContainer {
+  display:flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.formContainer {
+  margin-top: 100px;
+  background: linear-gradient(to top, map-get($colors, primary) 50%, map-get($colors, secondary) 0%);
+  padding: 50px;
+  border-radius: 20px;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  &__header {
+    font-size: 4rem;
+    color: #fff;
+  }
+        
+  &__button {
+    transition: all .3s ease;
+    padding: 15px;
+    width: 250px;
+    border-radius: 40px;
+    font-size: 2.3rem;
+    font-weight: 600;
+    color: map-get($colors, grey);
+    background-color: map-get($colors, yellow);
+    
+    &:hover {
+      color: #000;
+      background-color: #fff;
+    }
+  }
+}
+
+.spanContainer {
+  display: flex;
+  justify-content: end;
+  margin-right: 50px;
+  margin-top: 20px;
+}
+
+.text {
+  font-size: 2rem;
+  font-weight: 600;
+  color: map-get($colors, secondary);
+}
