@@ -10,7 +10,7 @@ const AppView: React.FC<Props> = (props: React.PropsWithChildren<Props>) => (
     <Suspense fallback={null}>
       <Routes>
         <Route path="/login" element={<Login />} />
-        <Route path="/" element={<Table />} />
+        <Route path="/table" element={<Table />} />
       </Routes>
     </Suspense>
   </BrowserRouter>

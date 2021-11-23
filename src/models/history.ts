@@ -1,7 +1,7 @@
-import { Status } from "./shared/enumerations";
+import { Status } from "./shared/enum";
 
 export interface IHistory {
-    readonly id?: number,
+    readonly id?: string,
     status?: Status,
     readonly created_at?: Date,
 };

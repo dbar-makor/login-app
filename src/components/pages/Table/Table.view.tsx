@@ -1,4 +1,4 @@
-import React, { ChangeEvent, MouseEventHandler } from 'react';
+import React, { ChangeEvent } from 'react';
 
 import MSvg from '../../ui/MSvg/MSvg';
 
@@ -6,17 +6,53 @@ import icons from '../../../assets/icons';
 
 import { IHistory } from '../../../models/history';
 
+import { Status } from '../../../models/shared/enum';
+
 import classes from './Table.module.scss';
 
 interface Props {
   readonly iconName?: keyof typeof icons;
   readonly history: IHistory[] | null;
-  readonly validityCheck: boolean;
   readonly onDownload: () => void;
   readonly onUpload: () => void;
   readonly onRun: () => void;
   readonly fileChangeHandler: (value: ChangeEvent<HTMLInputElement>) => void;
 }
+
+const d = new Date();
+
+const history: IHistory[] = [
+  {
+    id: '4234234',
+    status: Status.Failed,
+    created_at: d,
+  },
+  {
+    id: '4234234',
+    status: Status.Success,
+    created_at: d,
+  },
+  {
+    id: '4234234',
+    status: Status.Success,
+    created_at: d,
+  },
+  {
+    id: '4234234',
+    status: Status.Success,
+    created_at: d,
+  },
+  {
+    id: '4234234',
+    status: Status.Success,
+    created_at: d,
+  },
+  {
+    id: '4234234',
+    status: Status.Failed,
+    created_at: d,
+  }
+];
 
 const TableView: React.FC<Props> = (props: React.PropsWithChildren<Props>) => {
 
@@ -28,55 +64,76 @@ const TableView: React.FC<Props> = (props: React.PropsWithChildren<Props>) => {
         <span className={classes['titlesContainer__title']}>Actions</span>
       </div>
       <hr />
-      {/* {props.history?.map((index, idx) => {  */}
-        {/* return ( */}
+      {history?.map((index, idx) => { 
+        return (
           <div className={classes['historyContainer']}>
-            <span className={classes['historyContainer__date']}>22/11/2021</span>
+            <span 
+              className={classes['historyContainer__date']}>
+              {`${index.created_at?.getDate()}/${index.created_at?.getMonth()! + 1}/${index.created_at?.getUTCFullYear()}`}
+            </span>
             <span className={classes['historyContainer__status']}>
-              {props.validityCheck ?
-              <MSvg
-                name='checkMark'
-                className={classes['svgContainer']} 
-              /> :
-              <MSvg
-                name='error'
-                className={classes['svgContainer']} 
-              />
+              {index.status === Status.Success ?
+                <MSvg
+                  name='checkMark'
+                  className={classes['svgContainerBlack']} 
+                /> :
+                <MSvg
+                  name='error'
+                  className={classes['svgContainerBlack']} 
+                />
               }
             </span>
-            <span className={classes['historyContainer__options']}>
+            <div className={classes['historyContainer__options']}>
               <span className={classes['historyContainer__svgWrapper']}>
-                  <MSvg
-                    name='download'
-                    className={classes['svgContainer']} 
-                    onClick={props.onDownload}
-                  />
-              </span>
-              <span className={classes['historyContainer__svgWrapper']}>
-                <label>
-                  <input 
-                    type='file'
-                    accept='.csv'
-                    onChange={props.fileChangeHandler}
+                  {index.status === Status.Failed ?
+                    <MSvg
+                      name='download'
+                      className={classes['svgContainerBlack']} 
+                      onClick={props.onDownload}
+                    /> : 
+                    <MSvg
+                      name='download'
+                      className={classes['svgContainerBlack']} 
+                      onClick={props.onDownload}
                     />
-                  <MSvg
-                    name='upload'
-                    className={classes['svgContainer']} 
-                    onClick={props.onUpload}
-                  />
-                </label>
+                  }
               </span>
-              <label>
-                
-              </label>
-              <MSvg
-                name='run'
-                className={classes['svgContainer']} 
-                onClick={props.onRun}
-              />
-            </span>
+              <span className={classes['historyContainer__svgWrapper']}>
+                  {index.status === Status.Failed ?
+                    <label>
+                      <input 
+                        type='file'
+                        accept='.csv'
+                        onChange={props.fileChangeHandler}
+                        />
+                      <MSvg
+                        name='upload'
+                        className={classes['svgContainerBlack']} 
+                        onClick={props.onUpload}
+                      />
+                    </label> :
+                    <label>
+                      <MSvg
+                        name='upload'
+                        className={classes['svgContainerGrey']} 
+                      />
+                    </label>
+                  }
+              </span>
+              {index.status === Status.Failed ?
+                <MSvg
+                  name='run'
+                  className={classes['svgContainerBlack']} 
+                  onClick={props.onRun}
+                /> :
+                <MSvg
+                  name='run'
+                  className={classes['svgContainerGrey']} 
+                />
+              }
+            </div>
           </div>
-        {/* )})} */}
+        )})}
     </div>
   );
 };

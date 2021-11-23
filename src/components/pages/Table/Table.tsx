@@ -1,14 +1,10 @@
-import React, { ChangeEvent, MouseEventHandler, useState } from 'react';
+import React, { ChangeEvent, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { connect } from 'react-redux';
-import { Dispatch } from 'redux';
 import { AxiosResponse, AxiosError } from 'axios';
 
-import * as authActions from '../../../store/actions/auth';
 import { backendAPIAxios } from '../../../utils/http';
 
-import { IUser } from '../../../models/user';
-import { ICSV, IHistory } from '../../../models/history';
+import { IHistory } from '../../../models/history';
 
 import { 
   IHistoryResponse, 
@@ -21,23 +17,17 @@ import icons from '../../../assets/icons';
 
 import TableView from './Table.view';
 
-interface PropsFromDispatch {
-  login: (user: IUser) => authActions.Login;
-}
-
-interface Props extends PropsFromDispatch { 
+interface Props { 
   readonly iconName?: keyof typeof icons;
 }
 
 const Table: React.FC<Props> = (props: React.PropsWithChildren<Props>) => {
   const { id } = useParams<string>();
-  const CVSFile = new FormData();
-
+  
   const [ hitoryState, setHistoryState ] = useState<IHistory[] | null>(null);
   const [ fileState, setFileState ] = useState<string>('');
-  // const [ downloadState, setDownloadState ] = useState<MouseEventHandler<HTMLSpanElement> | undefined>();
-  const [ validityCheckeState, setValidityCheckeState ] = useState<boolean>(false);
   
+  const CVSFile = new FormData();
   const fileChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files![0];
     CVSFile.append('file', file);
@@ -56,55 +46,48 @@ const Table: React.FC<Props> = (props: React.PropsWithChildren<Props>) => {
   //   });
 
   const onDownland = () => {
-    console.log('download')
     backendAPIAxios.post(`/download/${id}`)
-    .then((response: AxiosResponse<IDownloadResponse>) => { 
-      if (!response.data) {
-        return alert('Failed to download CSV');
-      }
-    })
-    .catch((e: AxiosError) => {
-      alert(`Failed to send CSV with error: ${e}`);
-    });
-
-  }
+      .then((response: AxiosResponse<IDownloadResponse>) => { 
+        if (!response.data) {
+          return alert('Failed to download CSV');
+        }
+      })
+      .catch((e: AxiosError) => {
+        alert(`Failed to download CSV with error: ${e}`);
+      });
+  };
        
-
   const onUpload = () => {
-    console.log('upload')
     backendAPIAxios.post('/file', {
       file: CVSFile,
     }).then((response: AxiosResponse<IUploadCSVResponse>) => { 
         if (!response.data) {
-          return alert('Failed to send CSV');
+          return alert('Failed to upload CSV');
         }
   
         setFileState(() => response.data.data!.file);
       })
       .catch((e: AxiosError) => {
-        alert(`Failed to send CSV with error: ${e}`);
+        alert(`Failed to upload CSV with error: ${e}`);
       });
-  }
-
+  };
 
   const onRun = () => {
-    console.log('run')
     backendAPIAxios.get(`/run/${id}`)
       .then((response: AxiosResponse<IGetDataResponse>) => {
         if (!response.data) {
-          return alert('Failed to get data');
+          return alert('Failed to run');
         }
       })
       .catch((e: AxiosError) => {
-        alert(`Failed to get patient with error: ${e}`);
+        alert(`Failed to run with error: ${e}`);
       });
-  }
+  };
 
   return (
     <TableView
       iconName={props.iconName}
       history={hitoryState}
-      validityCheck={validityCheckeState}
       onDownload={onDownland}
       onUpload={onUpload}
       onRun={onRun}
@@ -116,10 +99,4 @@ const Table: React.FC<Props> = (props: React.PropsWithChildren<Props>) => {
 Table.displayName = 'Table';
 Table.defaultProps = {};
 
-const mapDispatchToProps = (dispatch: Dispatch<authActions.AuthTypes>): PropsFromDispatch => {
-  return {
-    login: (user: IUser): authActions.Login => dispatch(authActions.login(user)),
-  };
-};
-
-export default connect(null, mapDispatchToProps)(Table);
+export default Table;

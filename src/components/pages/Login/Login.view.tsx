@@ -1,8 +1,6 @@
-import { Link } from 'react-router-dom';
 import React from 'react';
 
 import Input from '../../ui/Input/Input';
-import MSvg from '../../ui/MSvg/MSvg';
 
 import icons from '../../../assets/icons';
 
@@ -27,11 +25,13 @@ const LoginView: React.FC<Props> = (props: React.PropsWithChildren<Props>) => {
               placeholder='Email'
               value={props.email}
               changeHandler={props.emailChangeHandler}
+              type='text'
             />
             <Input
               placeholder='Password'
               value={props.password}
               changeHandler={props.passwordChangeHandler}
+              type='password'
             />
             <button
               className={classes['form__button']}

@@ -2,16 +2,16 @@ import React from 'react';
 import { configure, shallow, ShallowWrapper } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 
-import App from './App';
+import Login from './Login';
 
 configure({ adapter: new Adapter() });
 
-describe('<App>', () => {
+describe('<Settings>', () => {
   let wrapper: ShallowWrapper;
 
   beforeEach(() => {
     wrapper = shallow(
-      <App></App>
+      <Login></Login>
     );
   });
 

@@ -55,5 +55,5 @@ body {
 .text {
   font-size: 2rem;
   font-weight: 600;
-  color: map-get($colors, secondary);
+  color: map-get($colors, primary);
 }

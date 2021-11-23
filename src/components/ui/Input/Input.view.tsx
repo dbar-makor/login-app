@@ -8,8 +8,7 @@ interface Props {
   readonly changeHandler: (value: string) => void;
   readonly raisePlaceholder: boolean;
   readonly raisePlaceholderHandler: (raised: boolean) => void;
-  readonly type?: 'email' | 'text' | 'file';
-  readonly style?: string;
+  readonly type?: 'password' | 'text';
   readonly accept?: string;
   readonly className?: string;
 }

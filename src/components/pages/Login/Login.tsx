@@ -1,11 +1,7 @@
 import React, { useState } from 'react';
-import { connect } from 'react-redux';
-import { Dispatch } from 'redux';
 import { AxiosResponse } from 'axios';
 
-import * as authActions from '../../../store/actions/auth';
 import { backendAPIAxios } from '../../../utils/http';
-import { IUser } from '../../../models/user';
 
 import { ILoginResponse } from '../../../models/response/response';
 
@@ -13,11 +9,7 @@ import icons from '../../../assets/icons';
 
 import LoginView from './Login.view';
 
-interface PropsFromDispatch {
-  login: (user: IUser) => authActions.Login;
-}
-
-interface Props extends PropsFromDispatch { 
+interface Props { 
   readonly iconName?: keyof typeof icons;
 }
 
@@ -36,7 +28,6 @@ const Login: React.FC<Props> = (props: React.PropsWithChildren<Props>) => {
       password: passwordState,
     }).then((response: AxiosResponse<ILoginResponse>) => {
       sessionStorage.setItem('token', response.data.data!.token);
-      props.login({ email: emailState });
     });
   };
 
@@ -55,10 +46,4 @@ const Login: React.FC<Props> = (props: React.PropsWithChildren<Props>) => {
 Login.displayName = 'Login';
 Login.defaultProps = {};
 
-const mapDispatchToProps = (dispatch: Dispatch<authActions.AuthTypes>): PropsFromDispatch => {
-  return {
-    login: (user: IUser): authActions.Login => dispatch(authActions.login(user)),
-  };
-};
-
-export default connect(null, mapDispatchToProps)(Login);
+export default Login;
