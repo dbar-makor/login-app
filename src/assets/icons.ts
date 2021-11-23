@@ -62,7 +62,7 @@ const icons = {
     </svg>
     `,
   ],
-  cloud: [
+  upload: [
     '512 512',
     `
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
@@ -71,7 +71,7 @@ const icons = {
     </svg>
     `,
   ],
-  again: [
+  run: [
     '470.083 470.083',
     `
     <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"

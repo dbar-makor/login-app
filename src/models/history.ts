@@ -1,12 +1,11 @@
 import { Status } from "./shared/enumerations";
 
 export interface IHistory {
-    id?: number,
-    date?: Date,
+    readonly id?: number,
     status?: Status,
-    files?: File,
+    readonly created_at?: Date,
 };
 
 export interface ICSV {
-    file: string,
+    readonly file: string,
 };

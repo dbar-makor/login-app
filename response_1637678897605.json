@@ -1,0 +1,25 @@
+{
+  "reports": [
+    {
+      "id": "67544fad-4c3e-11ec-8f4c-10e7c6179426",
+      "status": "success",
+      "created_at": "2021-11-23T09:20:04.000Z"
+    },
+    {
+      "id": "67542527-4c3e-11ec-8f4c-10e7c6179426",
+      "status": "success",
+      "created_at": "2021-11-23T09:19:04.000Z"
+    },
+    {
+      "id": "675443b4-4c3e-11ec-8f4c-10e7c6179426",
+      "status": "success",
+      "created_at": "2021-11-23T09:19:04.000Z"
+    }
+  ],
+  "meta_data": {
+    "sum_rows": 3,
+    "limit": 5,
+    "page": 1,
+    "sum_pages": 1
+  }
+}

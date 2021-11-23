@@ -1,7 +1,5 @@
-import React, { ChangeEvent } from 'react';
+import React, { ChangeEvent, MouseEventHandler } from 'react';
 
-import FileInput from '../../ui/FileInput/FileInput';
-import Input from '../../ui/Input/Input';
 import MSvg from '../../ui/MSvg/MSvg';
 
 import icons from '../../../assets/icons';
@@ -14,13 +12,15 @@ interface Props {
   readonly iconName?: keyof typeof icons;
   readonly history: IHistory[] | null;
   readonly validityCheck: boolean;
+  readonly onDownload: () => void;
+  readonly onUpload: () => void;
+  readonly onRun: () => void;
   readonly fileChangeHandler: (value: ChangeEvent<HTMLInputElement>) => void;
 }
 
 const TableView: React.FC<Props> = (props: React.PropsWithChildren<Props>) => {
 
   return (
-
     <div className={classes['outerContainer']}>
       <div className={classes['titlesContainer']}>
         <span className={classes['titlesContainer__title']}>Date</span>
@@ -46,27 +46,33 @@ const TableView: React.FC<Props> = (props: React.PropsWithChildren<Props>) => {
             </span>
             <span className={classes['historyContainer__options']}>
               <span className={classes['historyContainer__svgWrapper']}>
-                <label>
-                  <input 
-                    type='file' 
-                    accept=".csv"
-                    onChange={props.fileChangeHandler}
-                  />
                   <MSvg
                     name='download'
                     className={classes['svgContainer']} 
+                    onClick={props.onDownload}
+                  />
+              </span>
+              <span className={classes['historyContainer__svgWrapper']}>
+                <label>
+                  <input 
+                    type='file'
+                    accept='.csv'
+                    onChange={props.fileChangeHandler}
+                    />
+                  <MSvg
+                    name='upload'
+                    className={classes['svgContainer']} 
+                    onClick={props.onUpload}
                   />
                 </label>
               </span>
-              <span className={classes['historyContainer__svgWrapper']}>
-                <MSvg
-                  name='cloud'
-                  className={classes['svgContainer']} 
-                />
-              </span>
+              <label>
+                
+              </label>
               <MSvg
-                name='again'
+                name='run'
                 className={classes['svgContainer']} 
+                onClick={props.onRun}
               />
             </span>
           </div>

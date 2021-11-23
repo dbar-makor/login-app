@@ -7,7 +7,7 @@ import * as authActions from '../../../store/actions/auth';
 import { backendAPIAxios } from '../../../utils/http';
 import { IUser } from '../../../models/user';
 
-import { ILoginResponse } from '../../../models/response/user';
+import { ILoginResponse } from '../../../models/response/response';
 
 import icons from '../../../assets/icons';
 
@@ -26,14 +26,13 @@ const Login: React.FC<Props> = (props: React.PropsWithChildren<Props>) => {
   const [ passwordState, setPasswordState ] = useState<string>('');
 
   const emailChangeHandler = (value: string) => setEmailState(() => value);
-
   const passwordChangeHandler = (value: string) => setPasswordState(() => value);
 
   const submitHandler = (e: React.FormEvent) => {
     e.preventDefault();
 
     backendAPIAxios.post('/login', {
-      emailState,
+      email: emailState,
       password: passwordState,
     }).then((response: AxiosResponse<ILoginResponse>) => {
       sessionStorage.setItem('token', response.data.data!.token);

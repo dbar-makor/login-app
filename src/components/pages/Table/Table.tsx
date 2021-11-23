@@ -1,9 +1,8 @@
-import React, { ChangeEvent, useState } from 'react';
+import React, { ChangeEvent, MouseEventHandler, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 import { AxiosResponse, AxiosError } from 'axios';
-import DownloadJS from 'downloadjs';
 
 import * as authActions from '../../../store/actions/auth';
 import { backendAPIAxios } from '../../../utils/http';
@@ -15,7 +14,8 @@ import {
   IHistoryResponse, 
   IUploadCSVResponse,
   IGetDataResponse,
-} from '../../../models/response/user';
+  IDownloadResponse,
+} from '../../../models/response/response';
 
 import icons from '../../../assets/icons';
 
@@ -35,61 +35,79 @@ const Table: React.FC<Props> = (props: React.PropsWithChildren<Props>) => {
 
   const [ hitoryState, setHistoryState ] = useState<IHistory[] | null>(null);
   const [ fileState, setFileState ] = useState<string>('');
+  // const [ downloadState, setDownloadState ] = useState<MouseEventHandler<HTMLSpanElement> | undefined>();
   const [ validityCheckeState, setValidityCheckeState ] = useState<boolean>(false);
   
   const fileChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files![0];
-    CVSFile.append("file", file);
+    CVSFile.append('file', file);
   };
   
-  backendAPIAxios.get('/history', {
-    headers: { Authorization: `Bearer ${sessionStorage.getItem('token') ?? ''}` },
-  })
-    .then((response: AxiosResponse<IHistoryResponse>) => {
-      if (!response.data) {
-          return alert('Failed to get history');
-      }
+  // backendAPIAxios.get('/history')
+  //   .then((response: AxiosResponse<IHistoryResponse>) => {
+  //     if (!response.data) {
+  //         return alert('Failed to get history');
+  //     }
   
-      setHistoryState(() => response.data.data!);
-    })
-    .catch((e: AxiosError) => {
-      alert(`Failed to get history with error: ${e}`);
-    });
-    
+  //     setHistoryState(() => response.data.data!);
+  //   })
+  //   .catch((e: AxiosError) => {
+  //     alert(`Failed to get history with error: ${e}`);
+  //   });
 
-  backendAPIAxios.post(`/upload/${id}`, {
-    CVSFile,
-  }, {
-    headers: { Authorization: `Bearer ${sessionStorage.getItem('token') ?? ''}` },
-  }).then((response: AxiosResponse<IUploadCSVResponse>) => { 
+  const onDownland = () => {
+    console.log('download')
+    backendAPIAxios.post(`/download/${id}`)
+    .then((response: AxiosResponse<IDownloadResponse>) => { 
       if (!response.data) {
-        return alert('Failed to send CSV');
+        return alert('Failed to download CSV');
       }
-
-      setFileState(() => response.data.data!.file);
     })
     .catch((e: AxiosError) => {
       alert(`Failed to send CSV with error: ${e}`);
     });
 
-  backendAPIAxios.get(`/run/${id}`, {
-    headers: { Authorization: `Bearer ${sessionStorage.getItem('token') ?? ''}` },
-  })
-    .then((response: AxiosResponse<IGetDataResponse>) => {
-      if (!response.data) {
-        return alert('Failed to get data');
-      }
-    })
-    .catch((e: AxiosError) => {
-      alert(`Failed to get patient with error: ${e}`);
-    });
+  }
+       
 
+  const onUpload = () => {
+    console.log('upload')
+    backendAPIAxios.post('/file', {
+      file: CVSFile,
+    }).then((response: AxiosResponse<IUploadCSVResponse>) => { 
+        if (!response.data) {
+          return alert('Failed to send CSV');
+        }
+  
+        setFileState(() => response.data.data!.file);
+      })
+      .catch((e: AxiosError) => {
+        alert(`Failed to send CSV with error: ${e}`);
+      });
+  }
+
+
+  const onRun = () => {
+    console.log('run')
+    backendAPIAxios.get(`/run/${id}`)
+      .then((response: AxiosResponse<IGetDataResponse>) => {
+        if (!response.data) {
+          return alert('Failed to get data');
+        }
+      })
+      .catch((e: AxiosError) => {
+        alert(`Failed to get patient with error: ${e}`);
+      });
+  }
 
   return (
     <TableView
       iconName={props.iconName}
       history={hitoryState}
       validityCheck={validityCheckeState}
+      onDownload={onDownland}
+      onUpload={onUpload}
+      onRun={onRun}
       fileChangeHandler={fileChangeHandler}
     >{props.children}</TableView>
   );
