@@ -5,7 +5,7 @@ import MSvg from '../../ui/MSvg/MSvg';
 
 import icons from '../../../assets/icons';
 
-import { IHistory } from '../../../models/data';
+import { IHistory } from '../../../models/history';
 
 import classes from './Table.module.scss';
 
@@ -30,10 +30,10 @@ const LoginView: React.FC<Props> = (props: React.PropsWithChildren<Props>) => {
             name='checkMark'
             className={classes['svgContainer']} 
           />
-          <MSvg
+          {/* <MSvg
             name='error'
             className={classes['svgContainer']} 
-          />
+          /> */}
         </span>
         <span className={classes['historyContainer__options']}>
           <span className={classes['historyContainer__svgWrapper']}>

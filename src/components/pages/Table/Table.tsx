@@ -7,7 +7,7 @@ import * as authActions from '../../../store/actions/auth';
 import { backendAPIAxios } from '../../../utils/http';
 import { IUser } from '../../../models/user';
 
-import { IHistory } from '../../../models/data';
+import { IHistory } from '../../../models/history';
 import { IHistoryResponse } from '../../../models/response/user';
 
 import icons from '../../../assets/icons';

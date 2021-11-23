@@ -22,7 +22,7 @@ const LoginView: React.FC<Props> = (props: React.PropsWithChildren<Props>) => {
     <div className={classes['outerContainer']}>
         <div className={classes['formContainer']}>
           <form className={classes['form']} onSubmit={props.submitHandler}>
-            <h1 className={classes['form__header']}>Sing-In</h1>
+            <h1 className={classes['form__header']}>Sign-In</h1>
             <Input
               placeholder='Email'
               value={props.email}
@@ -36,7 +36,7 @@ const LoginView: React.FC<Props> = (props: React.PropsWithChildren<Props>) => {
             <button
               className={classes['form__button']}
               type='submit'>
-              Sing-In
+              Sign-In
             </button>  
           </form>
         </div>

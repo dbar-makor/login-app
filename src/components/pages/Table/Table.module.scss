@@ -1,7 +1,8 @@
 @import "../../../styles/variables.scss";
 
 body {
-  background-color: lightgray;
+  padding: map-get($sizes, minimal-padding);
+  background-color: map-get($colors, primary);
 }
 
 hr {
@@ -33,12 +34,13 @@ hr {
   justify-content: center;
 
   &__title {
-    color: map-get($colors, primary);
+    color: map-get($colors, steel-blue);
     font-size: 3rem;
     font-weight: 600;
+    margin-bottom: 18px;
 
     &:not(:last-child) {
-      margin-right: 75px;
+      margin-right: 85px;
     }
   }
 }
@@ -55,7 +57,7 @@ hr {
   }
 
   &__status {
-    margin: 0 90px 0 90px;
+    margin: 0 130px 0 130px;
   }
 
   &__svgWrapper {

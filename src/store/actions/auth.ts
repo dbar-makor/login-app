@@ -1,32 +1,18 @@
-import { IUser } from '../../models/user';
+import { Histoyr } from '../../models/history';
 
-export const AUTH_LOGOUT = '[Auth] Logout';
-export const AUTH_LOGIN = '[Auth] Login';
+export const COMPANIES = '[Auth] Logout';
+export const COMPANY = '[Auth] Login';
 
 // --- Interface --- //
 
-export interface Logout {
-  type: typeof AUTH_LOGOUT;
+export interface Companies {
+  type: typeof COMPANIES;
+  payload: { countries: Country }
 }
 
-export interface Login {
-  type: typeof AUTH_LOGIN;
+export interface Company {
+  type: typeof COMPANY;
   payload: { user: IUser };
 }
-
-// --- Action creators --- //
-
-export const logout = (): Logout => {
-  return {
-    type: AUTH_LOGOUT,
-  };
-};
-
-export const login = (user: IUser): Login => {
-  return {
-    type: AUTH_LOGIN,
-    payload: { user },
-  };
-};
 
 export type AuthTypes = Logout | Login;

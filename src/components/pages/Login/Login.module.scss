@@ -1,7 +1,7 @@
 @import "../../../styles/variables.scss";
 
 body {
-  background-color: lightgray;
+  background-color: #FCF8EC;
 }
 
 .outerContainer {
@@ -12,7 +12,7 @@ body {
 
 .formContainer {
   margin-top: 100px;
-  background: linear-gradient(to top, map-get($colors, primary) 50%, map-get($colors, secondary) 0%);
+  background-color: map-get($colors, steel-blue);
   padding: 50px;
   border-radius: 20px;
 }
@@ -35,8 +35,8 @@ body {
     border-radius: 40px;
     font-size: 2.3rem;
     font-weight: 600;
-    color: map-get($colors, grey);
-    background-color: map-get($colors, yellow);
+    color: #fff;
+    background-color: map-get($colors, light-blue);
     
     &:hover {
       color: #000;
