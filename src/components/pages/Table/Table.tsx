@@ -1,5 +1,6 @@
 import React, { ChangeEvent, useState } from 'react';
 import { useParams } from 'react-router-dom';
+
 import { AxiosResponse, AxiosError } from 'axios';
 
 import { backendAPIAxios } from '../../../utils/http';
@@ -25,7 +26,7 @@ const Table: React.FC<Props> = (props: React.PropsWithChildren<Props>) => {
   const { id } = useParams<string>();
   
   const [ hitoryState, setHistoryState ] = useState<IHistory[] | null>(null);
-  const [ fileState, setFileState ] = useState<string>('');
+  const [ , setFileState ] = useState<string>('');
   
   const CVSFile = new FormData();
   const fileChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
@@ -33,17 +34,17 @@ const Table: React.FC<Props> = (props: React.PropsWithChildren<Props>) => {
     CVSFile.append('file', file);
   };
   
-  // backendAPIAxios.get('/history')
-  //   .then((response: AxiosResponse<IHistoryResponse>) => {
-  //     if (!response.data) {
-  //         return alert('Failed to get history');
-  //     }
+  backendAPIAxios.get('/history')
+    .then((response: AxiosResponse<IHistoryResponse>) => {
+      if (!response.data) {
+          return alert('Failed to get history');
+      }
   
-  //     setHistoryState(() => response.data.data!);
-  //   })
-  //   .catch((e: AxiosError) => {
-  //     alert(`Failed to get history with error: ${e}`);
-  //   });
+      setHistoryState(() => response.data.data!);
+    })
+    .catch((e: AxiosError) => {
+      alert(`Failed to get history with error: ${e}`);
+    });
 
   const onDownland = () => {
     backendAPIAxios.post(`/download/${id}`)
