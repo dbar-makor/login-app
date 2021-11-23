@@ -1,14 +1,13 @@
 import { Status } from '../shared/enumerations';
-import IServerResponseData from '../shared/response';
 
-export interface ILoginResponse extends IServerResponseData {
+export interface ILoginResponse {
   readonly data?: Readonly<{
     token: string;
     email: string;
   }>;
 }
 
-export interface IHistoryResponse extends IServerResponseData {
+export interface IHistoryResponse {
   data?: {
     id: number,
     date: Date,
@@ -16,3 +15,11 @@ export interface IHistoryResponse extends IServerResponseData {
     files: File,
   }[];
 };
+
+export interface IUploadCSVResponse {
+  data?: {
+    file: string,
+  };
+};
+
+export interface IGetDataResponse { };

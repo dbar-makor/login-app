@@ -6,3 +6,7 @@ export interface IHistory {
     status?: Status,
     files?: File,
 };
+
+export interface ICSV {
+    file: string,
+};

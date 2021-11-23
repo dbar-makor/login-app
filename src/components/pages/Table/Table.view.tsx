@@ -1,6 +1,7 @@
-import { Link } from 'react-router-dom';
-import React from 'react';
+import React, { ChangeEvent } from 'react';
 
+import FileInput from '../../ui/FileInput/FileInput';
+import Input from '../../ui/Input/Input';
 import MSvg from '../../ui/MSvg/MSvg';
 
 import icons from '../../../assets/icons';
@@ -12,10 +13,14 @@ import classes from './Table.module.scss';
 interface Props {
   readonly iconName?: keyof typeof icons;
   readonly history: IHistory[] | null;
+  readonly validityCheck: boolean;
+  readonly fileChangeHandler: (value: ChangeEvent<HTMLInputElement>) => void;
 }
 
-const LoginView: React.FC<Props> = (props: React.PropsWithChildren<Props>) => {
+const TableView: React.FC<Props> = (props: React.PropsWithChildren<Props>) => {
+
   return (
+
     <div className={classes['outerContainer']}>
       <div className={classes['titlesContainer']}>
         <span className={classes['titlesContainer__title']}>Date</span>
@@ -23,42 +28,54 @@ const LoginView: React.FC<Props> = (props: React.PropsWithChildren<Props>) => {
         <span className={classes['titlesContainer__title']}>Actions</span>
       </div>
       <hr />
-      <div className={classes['historyContainer']}>
-        <span className={classes['historyContainer__date']}>22/11/2021</span>
-        <span className={classes['historyContainer__status']}>
-          <MSvg
-            name='checkMark'
-            className={classes['svgContainer']} 
-          />
-          {/* <MSvg
-            name='error'
-            className={classes['svgContainer']} 
-          /> */}
-        </span>
-        <span className={classes['historyContainer__options']}>
-          <span className={classes['historyContainer__svgWrapper']}>
-            <MSvg
-              name='download'
-              className={classes['svgContainer']} 
-            />
-          </span>
-          <span className={classes['historyContainer__svgWrapper']}>
-            <MSvg
-              name='cloud'
-              className={classes['svgContainer']} 
-            />
-          </span>
-          <MSvg
-            name='again'
-            className={classes['svgContainer']} 
-          />
-        </span>
-      </div>
+      {/* {props.history?.map((index, idx) => {  */}
+        {/* return ( */}
+          <div className={classes['historyContainer']}>
+            <span className={classes['historyContainer__date']}>22/11/2021</span>
+            <span className={classes['historyContainer__status']}>
+              {props.validityCheck ?
+              <MSvg
+                name='checkMark'
+                className={classes['svgContainer']} 
+              /> :
+              <MSvg
+                name='error'
+                className={classes['svgContainer']} 
+              />
+              }
+            </span>
+            <span className={classes['historyContainer__options']}>
+              <span className={classes['historyContainer__svgWrapper']}>
+                <label>
+                  <input 
+                    type='file' 
+                    accept=".csv"
+                    onChange={props.fileChangeHandler}
+                  />
+                  <MSvg
+                    name='download'
+                    className={classes['svgContainer']} 
+                  />
+                </label>
+              </span>
+              <span className={classes['historyContainer__svgWrapper']}>
+                <MSvg
+                  name='cloud'
+                  className={classes['svgContainer']} 
+                />
+              </span>
+              <MSvg
+                name='again'
+                className={classes['svgContainer']} 
+              />
+            </span>
+          </div>
+        {/* )})} */}
     </div>
   );
 };
 
-LoginView.displayName = 'LoginView';
-LoginView.defaultProps = {};
+TableView.displayName = 'TableView';
+TableView.defaultProps = {};
 
-export default LoginView;
+export default TableView;

@@ -3,11 +3,12 @@ import React, { useState } from 'react';
 import InputView from './Input.view';
 
 interface Props {
-  readonly placeholder: string;
-  readonly value: string;
+  readonly placeholder?: string;
+  readonly value?: string;
   readonly changeHandler: (value: string) => void;
   readonly type?: 'email' | 'text' | 'file';
   readonly style?: string;
+  readonly accept?: string;
   readonly className?: string;
 }
 
@@ -24,6 +25,7 @@ const Input: React.FC<Props> = (props: React.PropsWithChildren<Props>) => {
       raisePlaceholder={raisePlaceholderState}
       raisePlaceholderHandler={raisePlaceholderHandler}
       type={props.type}
+      accept={props.accept}
       className={props.className}
     >{props.children}</InputView>
   );
