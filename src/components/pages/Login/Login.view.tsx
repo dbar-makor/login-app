@@ -33,11 +33,11 @@ const LoginView: React.FC<Props> = (props: React.PropsWithChildren<Props>) => {
               changeHandler={props.passwordChangeHandler}
               type='password'
             />
-            <button
-              className={classes['form__button']}
-              type='submit'>
-              Sign-In
-            </button>  
+              <button
+                className={classes['form__button']}
+                type='submit'>
+                Sign-In
+              </button>
           </form>
         </div>
     </div>

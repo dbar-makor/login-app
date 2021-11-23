@@ -6,7 +6,7 @@ import Table from './Table';
 
 configure({ adapter: new Adapter() });
 
-describe('<Settings>', () => {
+describe('<Table>', () => {
   let wrapper: ShallowWrapper;
 
   beforeEach(() => {

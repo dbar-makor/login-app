@@ -6,7 +6,7 @@ import Login from './Login';
 
 configure({ adapter: new Adapter() });
 
-describe('<Settings>', () => {
+describe('<Login>', () => {
   let wrapper: ShallowWrapper;
 
   beforeEach(() => {

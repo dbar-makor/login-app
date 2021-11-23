@@ -1,17 +1,16 @@
 import React, { Suspense } from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Route } from 'react-router-dom';
 
 const Login = React.lazy(() => import('./components/pages/Login/Login'));
 const Table = React.lazy(() => import('./components/pages/Table/Table'));
+
 interface Props { }
 
 const AppView: React.FC<Props> = (props: React.PropsWithChildren<Props>) => (
   <BrowserRouter>
     <Suspense fallback={null}>
-      <Routes>
-        <Route path="/login" element={<Login />} />
-        <Route path="/table" element={<Table />} />
-      </Routes>
+      <Route path="/login" component={Login} />
+      <Route path="/table" component={Table} />
     </Suspense>
   </BrowserRouter>
 );

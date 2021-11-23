@@ -1,7 +1,7 @@
 @import "../../../styles/variables.scss";
 
 body {
-  background-color: #FCF8EC;
+  background-color: map-get($colors, primary);
 }
 
 .outerContainer {
