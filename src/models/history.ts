@@ -1,4 +1,4 @@
-import { Status } from "./shared/type";
+import { Status } from "./shared/enum";
 
 // export interface IHistory {
 //     reports: Readonly<{
@@ -9,11 +9,11 @@ import { Status } from "./shared/type";
 // };
 
 export interface IHistory {
-  reports: Array<{
+  reports: {
     id?: string;
     status?: Status;
     created_at?: string;
-  }>;
+  }[];
 };
 
 export interface ICSV {

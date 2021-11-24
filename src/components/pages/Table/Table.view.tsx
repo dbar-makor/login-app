@@ -15,7 +15,8 @@ import classes from './Table.module.scss';
 
 interface Props {
   readonly iconName?: keyof typeof icons;
-  readonly history: IHistory[] | null;
+  readonly history: IHistory | null;
+  download?: string;
   readonly onDownload: () => void;
   readonly onUpload: () => void;
   readonly onRun: () => void;
@@ -25,8 +26,8 @@ interface Props {
 const d = new Date();
 
 // const history: IHistory[] = [
-//   {
-//     "reports": [
+  //   {
+    //     "reports": [
 //       {
 //         "id": "13a5764e-4d0b-11ec-a58b-9c7bef452fa0",
 //         "status": Status.Failed,
@@ -65,26 +66,22 @@ const d = new Date();
 
 const TableView: React.FC<Props> = (props: React.PropsWithChildren<Props>) => {
 
-  console.log(props.history)
-
   return (
     <div className={classes['outerContainer']}>
       <div className={classes['titlesContainer']}>
         <span className={classes['titlesContainer__title']}>Date</span>
         <span className={classes['titlesContainer__title']}>Status</span>
         <span className={classes['titlesContainer__title']}>Actions</span>
-        {/* <span className={classes['titlesContainer__title']}>{props.history}</span> */}
       </div>
       <hr />
-      {props.history!.map((index, idx) => { 
+      {props.history?.reports.map((history, idx) => {
         return (
           <div className={classes['historyContainer']}>
-            <span 
-              className={classes['historyContainer__date']}>
-            {`${index.reports[0].created_at!.getDate()}/${index.reports[0].created_at?.getMonth()! + 1}/${index.reports[0].created_at?.getUTCFullYear()}`}
+            <span className={classes['historyContainer__date']} key={idx}>
+              {history.created_at}
             </span>
             <span className={classes['historyContainer__status']}>
-              {index.reports[0].status === Status.Success ?
+              {history.status === Status.Success ?
                 <MSvg
                   name='checkMark'
                   className={classes['svgContainerBlack']} 
@@ -96,21 +93,24 @@ const TableView: React.FC<Props> = (props: React.PropsWithChildren<Props>) => {
               }
             </span>
             <div className={classes['historyContainer__options']}>
-              <span className={classes['historyContainer__svgWrapper']}>
-                  {index.reports[0].status === Status.Failed ?
-                    <MSvg
-                      name='download'
-                      className={classes['svgContainerBlack']} 
-                      onClick={props.onDownload}
-                    /> : 
-                    <MSvg
-                      name='download'
-                      className={classes['svgContainerBlack']} 
-                      onClick={props.onDownload}
-                    />
-                  }
+              <span className={classes['historyContainer__svgWrapper']} key={idx}>
+                {/* {history.status === Status.Failed ? */}
+                  <MSvg
+                    name='download'
+                    className={classes['svgContainerBlack']} 
+                    onClick={()=> {
+                      // props.onDownload
+                      props.download = history.id;
+                    }}
+                  /> 
+                  {/* <MSvg
+                    name='download'
+                    className={classes['svgContainerBlack']} 
+                    onClick={props.onDownload}
+                  />
+                } */}
               </span>
-              {index.reports[0].status === Status.Failed ?
+              {history.status === Status.Failed ?
                 <Popup trigger={
                   <button>
                     <MSvg
@@ -120,8 +120,7 @@ const TableView: React.FC<Props> = (props: React.PropsWithChildren<Props>) => {
                   </button>} 
                   position='top center'
                   on='hover'
-                  mouseLeaveDelay={577500}
-                  className={classes['r']}>
+                  mouseLeaveDelay={577500}>
                   <MSvg
                     name='run'
                     className={classes['svgContainerBlack']} 
@@ -147,7 +146,8 @@ const TableView: React.FC<Props> = (props: React.PropsWithChildren<Props>) => {
               }
             </div>
           </div>
-        )})}
+        )
+      })}
     </div>
   );
 };

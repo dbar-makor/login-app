@@ -25,7 +25,7 @@ interface Props {
 const Table: React.FC<Props> = (props: React.PropsWithChildren<Props>) => {
   const { id } = useParams<{ id: string }>();
   
-  const [ hitoryState, setHistoryState ] = useState<IHistory[] | null>(null);
+  const [ hitoryState, setHistoryState ] = useState<IHistory | null>(null);
   const [ downloadState, setDownloadState ] = useState<string>('');
   const [ , setFileState ] = useState<string>('');
   
@@ -37,16 +37,14 @@ const Table: React.FC<Props> = (props: React.PropsWithChildren<Props>) => {
   
     useEffect(() => {
       backendAPIAxios.get('/history')
-      .then((response: AxiosResponse<IHistoryResponse[]>) => {
+      .then((response: AxiosResponse<IHistoryResponse>) => {
         if (!response.data) {
           return alert('Failed to get history');
         }
 
-        console.log(response.data)
         setHistoryState(() => response.data);
       })
       .catch((e: AxiosError) => {
-        console.log(e)
         // alert(`Failed to get history with error: ${e}`);
       });
     }, [setHistoryState])
@@ -73,7 +71,7 @@ const Table: React.FC<Props> = (props: React.PropsWithChildren<Props>) => {
           return alert('Failed to upload CSV');
         }
   
-        setFileState(() => response.data.data!.report_id);
+        setFileState(() => response.data.report_id);
       })
       .catch((e: AxiosError) => {
         alert(`Failed to upload CSV with error: ${e}`);
@@ -96,6 +94,7 @@ const Table: React.FC<Props> = (props: React.PropsWithChildren<Props>) => {
     <TableView
       iconName={props.iconName}
       history={hitoryState}
+      download={downloadState}
       onDownload={onDownland}
       onUpload={onUpload}
       onRun={onRun}

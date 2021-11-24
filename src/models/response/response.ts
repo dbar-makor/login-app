@@ -1,4 +1,4 @@
-import { Status } from '../shared/type';
+import { Status } from '../shared/enum';
 
 // export interface IHistoryResponse {
 //   reports: Readonly<{
@@ -8,24 +8,16 @@ import { Status } from '../shared/type';
 //   }>
 // }[];
 
-interface IReports {
-  readonly id?: string;
-  status?: Status;
-  created_at?: Date;
-}
-
 export interface IHistoryResponse {
   reports: {
-    readonly id?: string;
+    id?: string;
     status?: Status;
     created_at?: string;
   }[];
-}
+};
   
 export interface IUploadCSVResponse {
-  readonly data?: Readonly<{
-    report_id: string,
-  }>;
+  readonly report_id: string,
 };
   
 export interface IGetDataResponse { };
