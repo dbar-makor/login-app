@@ -1,4 +1,4 @@
-import React, { ChangeEvent } from 'react';
+import React, { ChangeEvent, Dispatch, SetStateAction } from 'react';
 
 import Popup from 'reactjs-popup';
 import 'reactjs-popup/dist/index.css';
@@ -16,53 +16,36 @@ import classes from './Table.module.scss';
 interface Props {
   readonly iconName?: keyof typeof icons;
   readonly history: IHistory | null;
-  download?: string;
-  readonly onDownload: () => void;
+  readonly onDownload: (fileName: string) => void;
   readonly onUpload: () => void;
-  readonly onRun: () => void;
+  readonly onRun: (reportId: string) => void;
   readonly fileChangeHandler: (value: ChangeEvent<HTMLInputElement>) => void;
 }
 
-const d = new Date();
-
-// const history: IHistory[] = [
-  //   {
-    //     "reports": [
-//       {
-//         "id": "13a5764e-4d0b-11ec-a58b-9c7bef452fa0",
-//         "status": Status.Failed,
-//         "created_at": d
-//       }
-//     ],
-//   },
-//   {
-//     "reports": [
-//       {
-//         "id": "13a5764e-4d0b-11ec-a58b-9c7bef452fa0",
-//         "status": Status.Failed,
-//         "created_at": d
-//       }
-//     ],
-//   },
-//   {
-//     "reports": [
-//       {
-//         "id": "13a5764e-4d0b-11ec-a58b-9c7bef452fa0",
-//         "status": Status.Failed,
-//         "created_at": d
-//       }
-//     ],
-//   },
-//   {
-//     "reports": [
-//       {
-//         "id": "13a5764e-4d0b-11ec-a58b-9c7bef452fa0",
-//         "status": Status.Failed,
-//         "created_at": d
-//       }
-//     ],
-//   },
-// ];
+const history: IHistory = {
+        "reports": [
+      {
+        "id": "13a5764e-4d0b-11ec-a58b-9c7bef452fa0",
+        "status": Status.Failed,
+        "created_at": '24/11/2022'
+      },
+      {
+        "id": "13a5764e-4d0b-11ec-a58b-9c7bef452fa0",
+        "status": Status.Success,
+        "created_at": '24/11/2022'
+      },
+      {
+        "id": "13a5764e-4d0b-11ec-a58b-9c7bef452fa0",
+        "status": Status.Failed,
+        "created_at": '24/11/2022'
+      },
+      {
+        "id": "13a5764e-4d0b-11ec-a58b-9c7bef452fa0",
+        "status": Status.Failed,
+        "created_at": '24/11/2022'
+      },
+    ],
+}
 
 const TableView: React.FC<Props> = (props: React.PropsWithChildren<Props>) => {
 
@@ -74,7 +57,7 @@ const TableView: React.FC<Props> = (props: React.PropsWithChildren<Props>) => {
         <span className={classes['titlesContainer__title']}>Actions</span>
       </div>
       <hr />
-      {props.history?.reports.map((history, idx) => {
+      {history?.reports.map((history, idx) => {
         return (
           <div className={classes['historyContainer']}>
             <span className={classes['historyContainer__date']} key={idx}>
@@ -94,21 +77,11 @@ const TableView: React.FC<Props> = (props: React.PropsWithChildren<Props>) => {
             </span>
             <div className={classes['historyContainer__options']}>
               <span className={classes['historyContainer__svgWrapper']} key={idx}>
-                {/* {history.status === Status.Failed ? */}
-                  <MSvg
-                    name='download'
-                    className={classes['svgContainerBlack']} 
-                    onClick={()=> {
-                      // props.onDownload
-                      props.download = history.id;
-                    }}
-                  /> 
-                  {/* <MSvg
-                    name='download'
-                    className={classes['svgContainerBlack']} 
-                    onClick={props.onDownload}
-                  />
-                } */}
+                <MSvg
+                  name='download'
+                  className={classes['svgContainerBlack']} 
+                  onClick={() => props.onDownload}
+                />
               </span>
               {history.status === Status.Failed ?
                 <Popup trigger={
@@ -120,11 +93,11 @@ const TableView: React.FC<Props> = (props: React.PropsWithChildren<Props>) => {
                   </button>} 
                   position='top center'
                   on='hover'
-                  mouseLeaveDelay={577500}>
+                  mouseLeaveDelay={500}>
                   <MSvg
                     name='run'
                     className={classes['svgContainerBlack']} 
-                    onClick={props.onRun}
+                    onClick={() => props.onRun(history.id!)}
                   />
                   <label>
                       <input 

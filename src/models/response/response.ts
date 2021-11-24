@@ -22,7 +22,9 @@ export interface IUploadCSVResponse {
   
 export interface IGetDataResponse { };
 
-export interface IDownloadResponse { };
+export interface IDownloadResponse {
+  readonly file_name: string;
+};
 
 export interface ILoginResponse {
   readonly token: string;
