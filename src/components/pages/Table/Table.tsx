@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useState } from 'react';
+import React, { ChangeEvent, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 import { AxiosResponse, AxiosError } from 'axios';
@@ -23,9 +23,10 @@ interface Props {
 }
 
 const Table: React.FC<Props> = (props: React.PropsWithChildren<Props>) => {
-  const { id } = useParams<string>();
+  const { id } = useParams<{ id: string }>();
   
   const [ hitoryState, setHistoryState ] = useState<IHistory[] | null>(null);
+  const [ downloadState, setDownloadState ] = useState<string>('');
   const [ , setFileState ] = useState<string>('');
   
   const CVSFile = new FormData();
@@ -34,17 +35,21 @@ const Table: React.FC<Props> = (props: React.PropsWithChildren<Props>) => {
     CVSFile.append('file', file);
   };
   
-  backendAPIAxios.get('/history')
-    .then((response: AxiosResponse<IHistoryResponse>) => {
-      if (!response.data) {
+    useEffect(() => {
+      backendAPIAxios.get('/history')
+      .then((response: AxiosResponse<IHistoryResponse[]>) => {
+        if (!response.data) {
           return alert('Failed to get history');
-      }
-  
-      setHistoryState(() => response.data.data!);
-    })
-    .catch((e: AxiosError) => {
-      alert(`Failed to get history with error: ${e}`);
-    });
+        }
+
+        console.log(response.data)
+        setHistoryState(() => response.data);
+      })
+      .catch((e: AxiosError) => {
+        console.log(e)
+        // alert(`Failed to get history with error: ${e}`);
+      });
+    }, [setHistoryState])
 
   const onDownland = () => {
     backendAPIAxios.post(`/download/${id}`)
@@ -52,6 +57,8 @@ const Table: React.FC<Props> = (props: React.PropsWithChildren<Props>) => {
         if (!response.data) {
           return alert('Failed to download CSV');
         }
+
+        // Get file_name
       })
       .catch((e: AxiosError) => {
         alert(`Failed to download CSV with error: ${e}`);
@@ -66,7 +73,7 @@ const Table: React.FC<Props> = (props: React.PropsWithChildren<Props>) => {
           return alert('Failed to upload CSV');
         }
   
-        setFileState(() => response.data.data!.file);
+        setFileState(() => response.data.data!.report_id);
       })
       .catch((e: AxiosError) => {
         alert(`Failed to upload CSV with error: ${e}`);
@@ -74,7 +81,7 @@ const Table: React.FC<Props> = (props: React.PropsWithChildren<Props>) => {
   };
 
   const onRun = () => {
-    backendAPIAxios.get(`/run/${id}`)
+    backendAPIAxios.get(`/run/${id}`) // Add report_id
       .then((response: AxiosResponse<IGetDataResponse>) => {
         if (!response.data) {
           return alert('Failed to run');

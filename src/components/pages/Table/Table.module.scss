@@ -15,6 +15,12 @@ hr {
   width: 700px;
 }
 
+button {
+  border: none;
+  padding: 0;
+  background: none;
+}
+
 input[type="file"] {
   display: none;
   border: 3px solid black;

@@ -11,3 +11,12 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+[role=tooltip].popup-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  max-width: 100px;
+  border-radius: 90px;
+  border-radius: 30px;
+}

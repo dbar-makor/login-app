@@ -5,8 +5,12 @@ import AppView from './App.view';
 interface Props { }
 
 const App: React.FC<Props> = (props: React.PropsWithChildren<Props>) => {
+  const isLoggedIn = sessionStorage.getItem('token');
+
   return (
-    <AppView></AppView>
+      <AppView
+        isLoggedIn={isLoggedIn}
+      ></AppView>
   );
 };
 

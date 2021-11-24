@@ -43,6 +43,12 @@ body {
       background-color: #fff;
     }
   }
+
+  &__error {
+    color: map-get($colors, primary);
+    font-size: 2rem;
+    margin-top: 10px;
+  }
 }
 
 .spanContainer {

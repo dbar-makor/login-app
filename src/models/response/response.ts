@@ -1,18 +1,30 @@
-import { ICSV } from '../history';
-import { Status } from '../shared/enum';
+import { Status } from '../shared/type';
+
+// export interface IHistoryResponse {
+//   reports: Readonly<{
+//     readonly id?: string,
+//     readonly status?: Status,
+//     readonly created_at?: Date,
+//   }>
+// }[];
+
+interface IReports {
+  readonly id?: string;
+  status?: Status;
+  created_at?: Date;
+}
 
 export interface IHistoryResponse {
-  readonly data?: Readonly<{
-    id: string,
-    status: Status,
-    date: Date,
-    files: File,
-  }>[];
-};
+  reports: {
+    readonly id?: string;
+    status?: Status;
+    created_at?: string;
+  }[];
+}
   
 export interface IUploadCSVResponse {
   readonly data?: Readonly<{
-    file: string,
+    report_id: string,
   }>;
 };
   
@@ -21,10 +33,7 @@ export interface IGetDataResponse { };
 export interface IDownloadResponse { };
 
 export interface ILoginResponse {
-  readonly data?: Readonly<{
-    token: string;
-    email: string;
-  }>;
+  readonly token: string;
 };
 
 export interface ITokenRefreshResponseData {

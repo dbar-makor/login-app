@@ -1,5 +1,8 @@
 import React, { ChangeEvent } from 'react';
 
+import Popup from 'reactjs-popup';
+import 'reactjs-popup/dist/index.css';
+
 import MSvg from '../../ui/MSvg/MSvg';
 
 import icons from '../../../assets/icons';
@@ -21,40 +24,48 @@ interface Props {
 
 const d = new Date();
 
-const history: IHistory[] = [
-  {
-    id: '4234234',
-    status: Status.Failed,
-    created_at: d,
-  },
-  {
-    id: '4234234',
-    status: Status.Success,
-    created_at: d,
-  },
-  {
-    id: '4234234',
-    status: Status.Success,
-    created_at: d,
-  },
-  {
-    id: '4234234',
-    status: Status.Success,
-    created_at: d,
-  },
-  {
-    id: '4234234',
-    status: Status.Success,
-    created_at: d,
-  },
-  {
-    id: '4234234',
-    status: Status.Failed,
-    created_at: d,
-  }
-];
+// const history: IHistory[] = [
+//   {
+//     "reports": [
+//       {
+//         "id": "13a5764e-4d0b-11ec-a58b-9c7bef452fa0",
+//         "status": Status.Failed,
+//         "created_at": d
+//       }
+//     ],
+//   },
+//   {
+//     "reports": [
+//       {
+//         "id": "13a5764e-4d0b-11ec-a58b-9c7bef452fa0",
+//         "status": Status.Failed,
+//         "created_at": d
+//       }
+//     ],
+//   },
+//   {
+//     "reports": [
+//       {
+//         "id": "13a5764e-4d0b-11ec-a58b-9c7bef452fa0",
+//         "status": Status.Failed,
+//         "created_at": d
+//       }
+//     ],
+//   },
+//   {
+//     "reports": [
+//       {
+//         "id": "13a5764e-4d0b-11ec-a58b-9c7bef452fa0",
+//         "status": Status.Failed,
+//         "created_at": d
+//       }
+//     ],
+//   },
+// ];
 
 const TableView: React.FC<Props> = (props: React.PropsWithChildren<Props>) => {
+
+  console.log(props.history)
 
   return (
     <div className={classes['outerContainer']}>
@@ -62,17 +73,18 @@ const TableView: React.FC<Props> = (props: React.PropsWithChildren<Props>) => {
         <span className={classes['titlesContainer__title']}>Date</span>
         <span className={classes['titlesContainer__title']}>Status</span>
         <span className={classes['titlesContainer__title']}>Actions</span>
+        {/* <span className={classes['titlesContainer__title']}>{props.history}</span> */}
       </div>
       <hr />
-      {history?.map((index, idx) => { 
+      {props.history!.map((index, idx) => { 
         return (
           <div className={classes['historyContainer']}>
             <span 
               className={classes['historyContainer__date']}>
-              {`${index.created_at?.getDate()}/${index.created_at?.getMonth()! + 1}/${index.created_at?.getUTCFullYear()}`}
+            {`${index.reports[0].created_at!.getDate()}/${index.reports[0].created_at?.getMonth()! + 1}/${index.reports[0].created_at?.getUTCFullYear()}`}
             </span>
             <span className={classes['historyContainer__status']}>
-              {index.status === Status.Success ?
+              {index.reports[0].status === Status.Success ?
                 <MSvg
                   name='checkMark'
                   className={classes['svgContainerBlack']} 
@@ -85,7 +97,7 @@ const TableView: React.FC<Props> = (props: React.PropsWithChildren<Props>) => {
             </span>
             <div className={classes['historyContainer__options']}>
               <span className={classes['historyContainer__svgWrapper']}>
-                  {index.status === Status.Failed ?
+                  {index.reports[0].status === Status.Failed ?
                     <MSvg
                       name='download'
                       className={classes['svgContainerBlack']} 
@@ -98,9 +110,24 @@ const TableView: React.FC<Props> = (props: React.PropsWithChildren<Props>) => {
                     />
                   }
               </span>
-              <span className={classes['historyContainer__svgWrapper']}>
-                  {index.status === Status.Failed ?
-                    <label>
+              {index.reports[0].status === Status.Failed ?
+                <Popup trigger={
+                  <button>
+                    <MSvg
+                      name='popup'
+                      className={classes['svgContainerBlack']} 
+                    />
+                  </button>} 
+                  position='top center'
+                  on='hover'
+                  mouseLeaveDelay={577500}
+                  className={classes['r']}>
+                  <MSvg
+                    name='run'
+                    className={classes['svgContainerBlack']} 
+                    onClick={props.onRun}
+                  />
+                  <label>
                       <input 
                         type='file'
                         accept='.csv'
@@ -111,23 +138,10 @@ const TableView: React.FC<Props> = (props: React.PropsWithChildren<Props>) => {
                         className={classes['svgContainerBlack']} 
                         onClick={props.onUpload}
                       />
-                    </label> :
-                    <label>
-                      <MSvg
-                        name='upload'
-                        className={classes['svgContainerGrey']} 
-                      />
                     </label>
-                  }
-              </span>
-              {index.status === Status.Failed ?
+                </Popup> :
                 <MSvg
-                  name='run'
-                  className={classes['svgContainerBlack']} 
-                  onClick={props.onRun}
-                /> :
-                <MSvg
-                  name='run'
+                  name='popup'
                   className={classes['svgContainerGrey']} 
                 />
               }
