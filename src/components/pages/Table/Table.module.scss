@@ -30,6 +30,12 @@ input[type="file"] {
   align-self: center;
   width: 4vh;
   height: 4vh;
+  cursor: pointer;
+}
+
+.svgContainerCheck {
+  width: 4vh;
+  height: 4vh;
 }
 
 .svgContainerGrey {
@@ -37,6 +43,21 @@ input[type="file"] {
   width: 4vh;
   height: 4vh;
   filter: invert(58%) sepia(8%) saturate(0%) hue-rotate(139deg) brightness(91%) contrast(90%);
+}
+
+.svgModal {
+  align-self: center;
+  width: 9vh;
+  height: 9vh;
+  cursor: pointer;
+}
+
+.svgModalGrey {
+  align-self: center;
+  width: 9vh;
+  height: 9vh;
+  filter: invert(58%) sepia(8%) saturate(0%) hue-rotate(139deg) brightness(91%) contrast(90%);
+  cursor: context-menu !important;
 }
 
 .outerContainer {
@@ -50,6 +71,7 @@ input[type="file"] {
   display: flex;
   align-items: center;
   justify-content: center;
+  margin-left: 20px ;
 
   &__title {
     color: map-get($colors, steel-blue);
@@ -58,7 +80,7 @@ input[type="file"] {
     margin-bottom: 18px;
 
     &:not(:last-child) {
-      margin-right: 85px;
+      margin-right: 90px;
     }
   }
 }
@@ -68,7 +90,7 @@ input[type="file"] {
   align-items: center;
   justify-content: center;
   margin-top: 20px;
-  margin-right: 70px;
+  margin-right: 20px;
   
   &__date {
     font-size: 2rem;
@@ -77,10 +99,77 @@ input[type="file"] {
   }
 
   &__status {
-    margin: 0 140px 0 110px;
+    margin: 0 120px 0 130px;
   }
 
   &__svgWrapper {
     margin-right: 20px;
+  }
+}
+
+.boxContainer {
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 500px;
+  height: 250px;
+  background-color: map-get($colors, light-blue);
+  border: 2px solid #000;
+}
+
+.buttonWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 25px;
+  
+  &__button {
+    transition: all .3s ease;
+    padding: 10px;
+    width: 203px;
+    height: 200px;
+    color: #fff;
+    background-color: map-get($colors, light-blue);
+    cursor: pointer !important;
+  }
+
+  &__unclickableButton {
+    transition: all .3s ease;
+    padding: 10px;
+    width: 203px;
+    height: 200px;
+    color: #fff;
+    background-color: map-get($colors, light-blue);
+    cursor: context-menu;
+  }
+  
+  &__text {
+    font-size: 1.5rem;
+    padding: 10px;
+    color: #000;
+    cursor: pointer;
+  }
+
+  &__unclickableText {
+    font-size: 1.5rem;
+    padding: 10px;
+    color: #888888;
+  }
+}
+
+
+.spinnerWrapper {
+  padding: 10px;
+  width: 203px;
+  height: 200px;
+  color: #fff;
+  background-color: map-get($colors, light-blue);
+  cursor: pointer !important;
+
+  &__spinner {
+    align-self: center;
+    padding: 30px;
+    border: 3px solid red;
   }
 }

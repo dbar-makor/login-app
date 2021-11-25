@@ -16,14 +16,14 @@ interface Props {
 }
 
 const Login: React.FC<Props> = (props: React.PropsWithChildren<Props>) => {
-  const [ usernameState, setUsernameState ] = useState<string>('');
-  const [ passwordState, setPasswordState ] = useState<string>('');
+  const [ usernameState, setUsernameState ] = useState<any>('');
+  const [ passwordState, setPasswordState ] = useState<any>('');
   const [ errorState, setErrorState ] = useState<boolean>(false);
 
   const history = useHistory();
 
-  const emailChangeHandler = (value: string) => setUsernameState(() => value);
-  const passwordChangeHandler = (value: string) => setPasswordState(() => value);
+  const usernameChangeHandler = (username: any) => setUsernameState(username.target.value);
+  const passwordChangeHandler = (password: any) => setPasswordState(password.target.value);
 
   const submitHandler = (e: React.FormEvent) => {
     e.preventDefault();
@@ -44,10 +44,10 @@ const Login: React.FC<Props> = (props: React.PropsWithChildren<Props>) => {
   return (
     <LoginView
       iconName={props.iconName}
-      uesrname={usernameState}
+      username={usernameState}
       password={passwordState}
       error={errorState}
-      emailChangeHandler={emailChangeHandler}
+      usernameChangeHandler={usernameChangeHandler}
       passwordChangeHandler={passwordChangeHandler}
       submitHandler={submitHandler}
     >{props.children}</LoginView>

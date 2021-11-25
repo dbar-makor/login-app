@@ -1,11 +1,13 @@
 import React, { ChangeEvent, Dispatch, SetStateAction } from 'react';
 
-import Popup from 'reactjs-popup';
-import 'reactjs-popup/dist/index.css';
+import moment from 'moment';
 
 import MSvg from '../../ui/MSvg/MSvg';
 
 import icons from '../../../assets/icons';
+
+import { Modal, Button, Box } from '@material-ui/core';
+import CircularProgress from '@mui/material/CircularProgress';
 
 import { IHistory } from '../../../models/history';
 
@@ -16,10 +18,16 @@ import classes from './Table.module.scss';
 interface Props {
   readonly iconName?: keyof typeof icons;
   readonly history: IHistory | null;
-  readonly onDownload: (fileName: string) => void;
-  readonly onUpload: () => void;
-  readonly onRun: (reportId: string) => void;
+  readonly onDownload: (reportId: string) => void;
+  readonly onRun: () => void;
   readonly fileChangeHandler: (value: ChangeEvent<HTMLInputElement>) => void;
+  readonly openState: boolean;
+  readonly handleOpen: () => void;
+  readonly handleClose: () => void;
+  readonly downloadLoadingState: boolean;
+  readonly runLoadingState: boolean;
+  readonly uploadLoadingState: boolean;
+  readonly checkUploadState: boolean;
 }
 
 const history: IHistory = {
@@ -57,70 +65,107 @@ const TableView: React.FC<Props> = (props: React.PropsWithChildren<Props>) => {
         <span className={classes['titlesContainer__title']}>Actions</span>
       </div>
       <hr />
-      {history?.reports.map((history, idx) => {
-        return (
-          <div className={classes['historyContainer']}>
-            <span className={classes['historyContainer__date']} key={idx}>
-              {history.created_at}
-            </span>
-            <span className={classes['historyContainer__status']}>
-              {history.status === Status.Success ?
+        {props.history?.reports.map((history) => {
+          return (
+            <div className={classes['historyContainer']}>
+              <span className={classes['historyContainer__date']} key={history.id}>
+                {moment(history.created_at).format('DD/MM/YYYY')}
+              </span>
+              <span className={classes['historyContainer__status']}>
+                {history.status === Status.Success ?
                 <MSvg
                   name='checkMark'
-                  className={classes['svgContainerBlack']} 
+                  className={classes['svgContainerCheck']} 
                 /> :
                 <MSvg
                   name='error'
-                  className={classes['svgContainerBlack']} 
-                />
-              }
-            </span>
-            <div className={classes['historyContainer__options']}>
-              <span className={classes['historyContainer__svgWrapper']} key={idx}>
-                <MSvg
-                  name='download'
-                  className={classes['svgContainerBlack']} 
-                  onClick={() => props.onDownload}
-                />
+                  className={classes['svgContainerCheck']} 
+                />}
               </span>
-              {history.status === Status.Failed ?
-                <Popup trigger={
-                  <button>
-                    <MSvg
-                      name='popup'
-                      className={classes['svgContainerBlack']} 
-                    />
-                  </button>} 
-                  position='top center'
-                  on='hover'
-                  mouseLeaveDelay={500}>
-                  <MSvg
-                    name='run'
-                    className={classes['svgContainerBlack']} 
-                    onClick={() => props.onRun(history.id!)}
-                  />
-                  <label>
-                      <input 
-                        type='file'
-                        accept='.csv'
-                        onChange={props.fileChangeHandler}
-                        />
+              <div className={classes['historyContainer__options']}>
+                <span className={classes['historyContainer__svgWrapper']} key={history.id}>
+                  <Button>
+                    {!props.downloadLoadingState ? 
                       <MSvg
-                        name='upload'
+                        name='download'
                         className={classes['svgContainerBlack']} 
-                        onClick={props.onUpload}
-                      />
-                    </label>
-                </Popup> :
+                        onClick={() => props.onDownload(history.id!)}
+                      /> :
+                      <CircularProgress className={classes['spinner']} color="inherit" />}
+                  </Button>
+                </span>
+                <Button className={classes['openModal']} onClick={props.handleOpen}>
+                  <MSvg
+                    name='popup'
+                    className={classes['svgContainerBlack']} 
+                  />
+                </Button>
+                {history.status === Status.Failed ?
+                <Modal
+                  open={props.openState}
+                  onClose={props.handleClose}
+                  aria-labelledby="modal-modal-title"
+                  aria-describedby="modal-modal-description"
+                >   
+                  <Box className={classes['boxContainer']}>
+                    <div className={classes['buttonWrapper']}>
+                      {props.checkUploadState ? !props.runLoadingState ?
+                        <Button 
+                          onClick={props.onRun}
+                          className={classes['buttonWrapper__button']}
+                        >
+                          <label>
+                            <MSvg
+                              name='run'
+                              className={classes['svgModal']}
+                            />
+                            <p className={classes['buttonWrapper__text']}>RUN</p>
+                          </label>
+                        </Button> :
+                        <div className={classes['spinnerWraper']}>
+                          <CircularProgress className={classes['spinnerWraper__spinner']} color="inherit" />
+                        </div> : 
+                        <Button className={classes['buttonWrapper__unclickableButton']}>
+                          <label>
+                            <MSvg
+                              name='run'
+                              className={classes['svgModalGrey']}
+                            />
+                            <p className={classes['buttonWrapper__unclickableText']}>RUN</p>
+                          </label>
+                        </Button>}
+                      {!props.uploadLoadingState ?
+                        <Button 
+                          type='button'
+                          className={classes['buttonWrapper__button']}
+                        >
+                          <label>
+                            <input 
+                              type='file'
+                              accept='.csv'
+                              onChange={props.fileChangeHandler}
+                            />
+                            <MSvg
+                              name='upload'
+                              className={classes['svgModal']} 
+                            />
+                            <p className={classes['buttonWrapper__text']}>UPLOAD</p>
+                          </label>
+                        </Button> :
+                      <div className={classes['spinnerWraper']}>
+                        <CircularProgress className={classes['spinnerWraper__spinner']} color="inherit" style={{ alignSelf: 'center' }} />
+                      </div>}
+                    </div>
+                  </Box>
+                </Modal> :
                 <MSvg
                   name='popup'
                   className={classes['svgContainerGrey']} 
-                />
-              }
+                />}
+              </div>
             </div>
-          </div>
-        )
-      })}
+          )
+        })}
     </div>
   );
 };
