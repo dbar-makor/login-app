@@ -8,8 +8,8 @@ import icons from '../../../assets/icons';
 
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
-import Fade from '@mui/material/Fade';
 import Button from '@mui/material/Button';
+import Tooltip from '@mui/material/Tooltip';
 
 import CircularProgress from '@mui/material/CircularProgress';
 
@@ -105,9 +105,6 @@ const history: IHistory = {
 }
 
 const TableView: React.FC<Props> = (props: React.PropsWithChildren<Props>) => {
-   const [open, setOpen] = React.useState(false);
-    const handleOpen = () => setOpen(true);
-    const handleClose = () => setOpen(false);
 
   return (
     <div className={classes['outerContainer']}>
@@ -125,25 +122,29 @@ const TableView: React.FC<Props> = (props: React.PropsWithChildren<Props>) => {
               </span>
               <span className={classes['historyContainer__status']}>
                 {history.status === Status.Success ?
-                <MSvg
-                  name='checkMark'
-                  className={classes['svgContainerCheck']} 
-                /> :
-                <MSvg
-                  name='error'
-                  className={classes['svgContainerCheck']} 
-                />}
+                  <MSvg
+                    name='checkMark'
+                    className={classes['svgContainerCheck']} 
+                  /> :
+                  <MSvg
+                    name='error'
+                    className={classes['svgContainerCheck']} 
+                  />
+                }
               </span>
               <div className={classes['historyContainer__options']}>
                 <span className={classes['historyContainer__svgWrapper']}>
                   <Button>
                     {!props.downloadLoadingState ? 
-                      <MSvg
-                        name='download'
-                        className={classes['svgContainerBlack']} 
-                        onClick={() => props.onDownload(history.id!)}
-                      /> :
-                      <CircularProgress className={classes['spinner']} color="inherit" />}
+                        <MSvg
+                          name='download'
+                          className={classes['svgContainerBlack']} 
+                          onClick={() => props.onDownload(history.id!)}
+                        /> :
+                      <Tooltip title={<h1 style={{ fontSize: '17px' }}>Loading</h1>} placement="left" arrow>
+                        <CircularProgress color="inherit" />
+                      </Tooltip>
+                    }
                   </Button>
                 </span>
                 {history.status === Status.Failed ?  
@@ -153,12 +154,19 @@ const TableView: React.FC<Props> = (props: React.PropsWithChildren<Props>) => {
                       className={classes['svgContainerBlack']} 
                     />
                   </Button> :
-                  <Button className={classes['openModal']}>
-                    <MSvg
-                      name='popup'
-                      className={classes['svgContainerGrey']} 
-                    />
-                  </Button>}
+                  <Tooltip 
+                    title={<h1 style={{ fontSize: '17px' }}>No actions to proform</h1>} 
+                    placement="right" 
+                    arrow
+                  >
+                    <Button className={classes['openModal']}>
+                      <MSvg
+                        name='popup'
+                        className={classes['svgContainerGrey']} 
+                      />
+                    </Button>
+                  </Tooltip>
+                }
                 <Modal
                   open={props.openModalState}
                   onClose={props.handleModalClose}
@@ -168,15 +176,21 @@ const TableView: React.FC<Props> = (props: React.PropsWithChildren<Props>) => {
                   <Box className={classes['boxContainer']}>
                     <div className={classes['buttonWrapper']}>
                       {!props.checkUploadState ? 
-                        <Button className={classes['buttonWrapper__button']}>
-                          <label className={classes['buttonWrapper__label']}>
-                              <MSvg
-                                name='run'
-                                className={classes['svgModal']}
-                              />
-                            <p className={classes['buttonWrapper__text']}>RUgergergN</p>
-                          </label>
-                        </Button> :
+                        <Tooltip 
+                          title={<h1 style={{ fontSize: '17px' }}>Unable to run, no file uploaded</h1>} 
+                          placement="top" 
+                          arrow
+                        >
+                          <Button className={classes['buttonWrapper__button']}>
+                            <label className={classes['buttonWrapper__label']}>
+                                <MSvg
+                                  name='run'
+                                  className={classes['svgModalGrey']}
+                                />
+                              <p className={classes['buttonWrapper__unclickableText']}>RUN</p>
+                            </label>
+                          </Button>
+                        </Tooltip> :
                         <Button onClick={props.onRun} className={classes['buttonWrapper__button']}>
                           <label className={classes['buttonWrapper__label']}>
                             {!props.runLoadingState ? 
@@ -184,25 +198,35 @@ const TableView: React.FC<Props> = (props: React.PropsWithChildren<Props>) => {
                                 name='run'
                                 className={classes['svgModal']}
                               /> :
-                              <CircularProgress className={classes['spinner']} color="inherit" size={80}/>}
+                              <CircularProgress color="inherit" size={80}
+                              />
+                            }
                             <p className={classes['buttonWrapper__text']}>RUN</p>
                           </label>
-                        </Button>}
+                        </Button>
+                      }
                       <Button type='button' className={classes['buttonWrapper__button']}>
-                        <label>
+                        <label className={classes['buttonWrapper__label']}>
                           {!props.uploadLoadingState ?
-                          <label>
-                            <input 
-                              type='file'
-                              accept='.csv'
-                              onChange={props.onUpload}
-                            />
-                            <MSvg
-                              name='upload'
-                              className={classes['svgModal']} 
-                            /> 
-                          </label> :
-                          <CircularProgress className={classes['spinner']} color="inherit" size={80} />}
+                            <label className={classes['buttonWrapper__label']}>
+                              <input 
+                                type='file'
+                                accept='.csv'
+                                onChange={props.onUpload}
+                              />
+                              <MSvg
+                                name='upload'
+                                className={classes['svgModal']} 
+                                /> 
+                            </label> :
+                            <Tooltip 
+                              title={<h1 style={{ fontSize: '17px' }}>Loading</h1>} 
+                              placement="top" 
+                              arrow
+                            >
+                              <CircularProgress color="inherit" size={80}/>
+                            </Tooltip>
+                          }
                           <p className={classes['buttonWrapper__text']}>UPLOAD</p>
                         </label>
                       </Button>

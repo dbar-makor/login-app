@@ -15,12 +15,6 @@ hr {
   width: 700px;
 }
 
-button {
-  border: none;
-  padding: 0;
-  background: none;
-}
-
 input[type="file"] {
   display: none;
   border: 3px solid black;
@@ -30,7 +24,7 @@ input[type="file"] {
   align-self: center;
   width: 4vh;
   height: 4vh;
-  // cursor: pointer;
+  cursor: pointer;
 }
 
 .svgContainerCheck {
@@ -129,51 +123,23 @@ input[type="file"] {
   margin-top: 75px;
   
   &__button {
-    transition: all .3s ease;
-    padding: 100px;
     width: 300px;
     height: 250px;
-    color: #fff;
-    background-color: map-get($colors, light-blue);
-    // cursor: pointer !important;
   }
 
   &__label {
-    // cursor: pointer;
-  }
-  
-  &__unclickableButton {
-    transition: all .3s ease;
-    padding: 10px;
-    width: 300px;
-    height: 250px;
-    color: #fff;
-    background-color: map-get($colors, light-blue);
-    // cursor: context-menu;
+    cursor: pointer;
   }
   
   &__text {
     font-size: 1.5rem;
     padding: 10px;
     color: #000;
-    // cursor: pointer;
   }
 
   &__unclickableText {
     font-size: 1.5rem;
     padding: 10px;
     color: #888888;
-  }
-}
-
-
-.spinnerWrapper {
-  padding: 10px;
-  width: 203px;
-  height: 200px;
-  // cursor: pointer !important;
-
-  &__spinner {
-    align-self: center;
   }
 }

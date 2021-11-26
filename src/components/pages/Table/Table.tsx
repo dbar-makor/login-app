@@ -117,6 +117,7 @@ const Table: React.FC<Props> = (props: React.PropsWithChildren<Props>) => {
         if (response.status === 200) {
           setCheckUploadState(() => true);
         }
+
       })
       .catch((e: AxiosError) => {
         alert(`Failed to upload CSV with error: ${e}`);
@@ -132,6 +133,10 @@ const Table: React.FC<Props> = (props: React.PropsWithChildren<Props>) => {
       .then((response: AxiosResponse<IGetDataResponse>) => {
         if (!response.data) {
           return alert('Failed to run');
+        }
+
+        if (response.status === 200) {
+          setCheckUploadState(() => false);
         }
       })
       .catch((e: AxiosError) => {
