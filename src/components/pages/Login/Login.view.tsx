@@ -11,10 +11,10 @@ interface Props {
   readonly iconName?: keyof typeof icons;
   readonly username?: ChangeEventHandler<HTMLTextAreaElement | HTMLInputElement>;
   readonly password?: ChangeEventHandler<HTMLTextAreaElement | HTMLInputElement>;
-  readonly error: boolean;
   readonly usernameChangeHandler: ChangeEventHandler<HTMLTextAreaElement | HTMLInputElement>;
   readonly passwordChangeHandler: ChangeEventHandler<HTMLTextAreaElement | HTMLInputElement>;
   readonly submitHandler: (e: React.FormEvent) => void;
+  readonly error: boolean;
 }
 
 const LoginView: React.FC<Props> = (props: React.PropsWithChildren<Props>) => {

@@ -30,7 +30,7 @@ input[type="file"] {
   align-self: center;
   width: 4vh;
   height: 4vh;
-  cursor: pointer;
+  // cursor: pointer;
 }
 
 .svgContainerCheck {
@@ -49,15 +49,19 @@ input[type="file"] {
   align-self: center;
   width: 9vh;
   height: 9vh;
-  cursor: pointer;
+  // cursor: pointer;
 }
 
 .svgModalGrey {
   align-self: center;
   width: 9vh;
   height: 9vh;
-  filter: invert(58%) sepia(8%) saturate(0%) hue-rotate(139deg) brightness(91%) contrast(90%);
-  cursor: context-menu !important;
+  filter: invert(16%) sepia(9%) saturate(8%) hue-rotate(357deg) brightness(93%) contrast(20%);
+  // cursor: context-menu !important;
+
+  &:hover {
+    background-color: none !important;
+  }
 }
 
 .outerContainer {
@@ -71,7 +75,7 @@ input[type="file"] {
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-left: 20px ;
+  margin-left: 20px;
 
   &__title {
     color: map-get($colors, steel-blue);
@@ -110,45 +114,49 @@ input[type="file"] {
 .boxContainer {
   position: absolute;
   top: 40%;
-  left: 50%;
+  left: 49.5%;
   transform: translate(-50%, -50%);
-  width: 500px;
-  height: 250px;
-  background-color: map-get($colors, light-blue);
-  border: 2px solid #000;
+  width: 700px;
+  height: 400px;
+  background-color: map-get($colors, primary);
+  border: 6px solid #000;
 }
 
 .buttonWrapper {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 25px;
+  margin-top: 75px;
   
   &__button {
     transition: all .3s ease;
-    padding: 10px;
-    width: 203px;
-    height: 200px;
+    padding: 100px;
+    width: 300px;
+    height: 250px;
     color: #fff;
     background-color: map-get($colors, light-blue);
-    cursor: pointer !important;
+    // cursor: pointer !important;
   }
 
+  &__label {
+    // cursor: pointer;
+  }
+  
   &__unclickableButton {
     transition: all .3s ease;
     padding: 10px;
-    width: 203px;
-    height: 200px;
+    width: 300px;
+    height: 250px;
     color: #fff;
     background-color: map-get($colors, light-blue);
-    cursor: context-menu;
+    // cursor: context-menu;
   }
   
   &__text {
     font-size: 1.5rem;
     padding: 10px;
     color: #000;
-    cursor: pointer;
+    // cursor: pointer;
   }
 
   &__unclickableText {
@@ -163,13 +171,9 @@ input[type="file"] {
   padding: 10px;
   width: 203px;
   height: 200px;
-  color: #fff;
-  background-color: map-get($colors, light-blue);
-  cursor: pointer !important;
+  // cursor: pointer !important;
 
   &__spinner {
     align-self: center;
-    padding: 30px;
-    border: 3px solid red;
   }
 }

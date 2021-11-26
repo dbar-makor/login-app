@@ -19,11 +19,7 @@ const AppView: React.FC<Props> = (props: React.PropsWithChildren<Props>) => (
       <Switch>
         <Route path="/auth" component={Login} />
         <Route path="/table" component={Table} />
-        {/* {props.isLoggedIn ?
-          <Route path="/table" component={Table} /> :
-          <Route path="/auth" component={Login} />
-        } */}
-        </Switch>
+      </Switch>
     </Suspense>
   </BrowserRouter>  
 );

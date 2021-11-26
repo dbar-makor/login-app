@@ -31,18 +31,20 @@ const Table: React.FC<Props> = (props: React.PropsWithChildren<Props>) => {
   
   const [ downloadLoadingState, setDownloadLoadingState ] = useState<boolean>(false);
   const [ runLoadingState, setRunLoadingState ] = useState<boolean>(false);
-  const [ uploadLoadingState, setUploadLoadingState ] = useState<boolean>(true);
-  const [ checkUploadState, setCheckUploadState ] = useState<boolean>(false);
-  const [ openState, setOpenState ] = useState<boolean>(false);
+  const [ uploadLoadingState, setUploadLoadingState ] = useState<boolean>(false);
 
-  const handleOpen = () => setOpenState(true);
-  const handleClose = () => setOpenState(false);
-  
+  const [ checkUploadState, setCheckUploadState ] = useState<boolean>(false);
+
+  const [ openModalState, setOpenModalState ] = useState<boolean>(false);
+
+  const handleModalOpen = () => setOpenModalState(true);
+  const handleModalClose = () => setOpenModalState(false);
   
   const getHistory = async () => {
     try {
       const token = sessionStorage.getItem('token');
       
+      // Checks if token exist
       if (token) {
         const response = await backendAPIAxios.get('/history',{ headers: { "Authorization": token } });
         backendAPIAxios.defaults.headers.common['Authorization'] = token;
@@ -73,6 +75,7 @@ const Table: React.FC<Props> = (props: React.PropsWithChildren<Props>) => {
   
   const onDownland = (reportId: string) => {
     setDownloadLoadingState(() => true);
+
     backendAPIAxios.get(`/download/${reportId}`)
     .then((response: AxiosResponse<IDownloadResponse>) => { 
       if (!response.data.file_link) {
@@ -84,20 +87,23 @@ const Table: React.FC<Props> = (props: React.PropsWithChildren<Props>) => {
     .catch((e: AxiosError) => {
       alert(`Failed to download CSV with error: ${e}`);
     }).finally(() => {
+
       setDownloadLoadingState(() => false);  
-      setCheckUploadState(() => true)
     });
   };   
   
-  const fileChangeHandler = (event: ChangeEvent<HTMLInputElement>) => { 
+  const onUpload = (event: ChangeEvent<HTMLInputElement>) => { 
     const file = event.target.files![0];
 
     CVSFile.append('file', file);
 
-    setUploadLoadingState(() => true);  
+    setUploadLoadingState(() => true); 
+
     backendAPIAxios.post('/upload', {
       file: CVSFile,
     }, {
+      // 'Content-Type': 'application/x-www-form-urlencoded'
+      // https://github.com/request/request-promise
       headers: {
         'Content-Type': 'multipart/form-data'
       }
@@ -107,7 +113,10 @@ const Table: React.FC<Props> = (props: React.PropsWithChildren<Props>) => {
         }
 
         setFileState(() => response.data.report_id);
-        console.log(2837)
+
+        if (response.status === 200) {
+          setCheckUploadState(() => true);
+        }
       })
       .catch((e: AxiosError) => {
         alert(`Failed to upload CSV with error: ${e}`);
@@ -117,7 +126,8 @@ const Table: React.FC<Props> = (props: React.PropsWithChildren<Props>) => {
   };
 
   const onRun = () => {
-    setRunLoadingState(() => false);
+    setRunLoadingState(() => true);
+
     backendAPIAxios.post(`/run/${downloadState}`)
       .then((response: AxiosResponse<IGetDataResponse>) => {
         if (!response.data) {
@@ -127,7 +137,7 @@ const Table: React.FC<Props> = (props: React.PropsWithChildren<Props>) => {
       .catch((e: AxiosError) => {
         alert(`Failed to run with error: ${e}`);
       }).finally(() => {
-        setRunLoadingState(() => true);
+        setRunLoadingState(() => false);
       });
   };
 
@@ -137,10 +147,10 @@ const Table: React.FC<Props> = (props: React.PropsWithChildren<Props>) => {
       history={hitoryState}
       onDownload={onDownland}
       onRun={onRun}
-      fileChangeHandler={fileChangeHandler}
-      openState={openState}
-      handleOpen={handleOpen}
-      handleClose={handleClose}
+      onUpload={onUpload}
+      openModalState={openModalState}
+      handleModalOpen={handleModalOpen}
+      handleModalClose={handleModalClose}
       downloadLoadingState={downloadLoadingState}
       runLoadingState={runLoadingState}
       uploadLoadingState={uploadLoadingState}

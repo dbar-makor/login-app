@@ -1,4 +1,4 @@
-import React, { ChangeEvent, Dispatch, SetStateAction } from 'react';
+import React, { ChangeEvent } from 'react';
 
 import moment from 'moment';
 
@@ -6,7 +6,11 @@ import MSvg from '../../ui/MSvg/MSvg';
 
 import icons from '../../../assets/icons';
 
-import { Modal, Button, Box } from '@material-ui/core';
+import Box from '@mui/material/Box';
+import Modal from '@mui/material/Modal';
+import Fade from '@mui/material/Fade';
+import Button from '@mui/material/Button';
+
 import CircularProgress from '@mui/material/CircularProgress';
 
 import { IHistory } from '../../../models/history';
@@ -20,10 +24,10 @@ interface Props {
   readonly history: IHistory | null;
   readonly onDownload: (reportId: string) => void;
   readonly onRun: () => void;
-  readonly fileChangeHandler: (value: ChangeEvent<HTMLInputElement>) => void;
-  readonly openState: boolean;
-  readonly handleOpen: () => void;
-  readonly handleClose: () => void;
+  readonly onUpload: (value: ChangeEvent<HTMLInputElement>) => void;
+  readonly openModalState: boolean;
+  readonly handleModalOpen: () => void;
+  readonly handleModalClose: () => void;
   readonly downloadLoadingState: boolean;
   readonly runLoadingState: boolean;
   readonly uploadLoadingState: boolean;
@@ -35,27 +39,75 @@ const history: IHistory = {
       {
         "id": "13a5764e-4d0b-11ec-a58b-9c7bef452fa0",
         "status": Status.Failed,
-        "created_at": '24/11/2022'
+        "created_at": '2021-11-24T09:44:11.000Z'
       },
       {
         "id": "13a5764e-4d0b-11ec-a58b-9c7bef452fa0",
         "status": Status.Success,
-        "created_at": '24/11/2022'
+        "created_at": '2021-11-24T09:44:11.000Z'
+      },
+      {
+        "id": "13a5764e-4d0b-11ec-a58b-9c7bef452fa0",
+        "status": Status.Success,
+        "created_at": '2021-11-24T09:44:11.000Z'
       },
       {
         "id": "13a5764e-4d0b-11ec-a58b-9c7bef452fa0",
         "status": Status.Failed,
-        "created_at": '24/11/2022'
+        "created_at": '2021-11-24T09:44:11.000Z'
       },
       {
         "id": "13a5764e-4d0b-11ec-a58b-9c7bef452fa0",
         "status": Status.Failed,
-        "created_at": '24/11/2022'
+        "created_at": '2021-11-24T09:44:11.000Z'
+      },
+      {
+        "id": "13a5764e-4d0b-11ec-a58b-9c7bef452fa0",
+        "status": Status.Failed,
+        "created_at": '2021-11-24T09:44:11.000Z'
+      },
+      {
+        "id": "13a5764e-4d0b-11ec-a58b-9c7bef452fa0",
+        "status": Status.Success,
+        "created_at": '2021-11-24T09:44:11.000Z'
+      },
+      {
+        "id": "13a5764e-4d0b-11ec-a58b-9c7bef452fa0",
+        "status": Status.Failed,
+        "created_at": '2021-11-24T09:44:11.000Z'
+      },
+      {
+        "id": "13a5764e-4d0b-11ec-a58b-9c7bef452fa0",
+        "status": Status.Failed,
+        "created_at": '2021-11-24T09:44:11.000Z'
+      },
+      {
+        "id": "13a5764e-4d0b-11ec-a58b-9c7bef452fa0",
+        "status": Status.Success,
+        "created_at": '2021-11-24T09:44:11.000Z'
+      },
+      {
+        "id": "13a5764e-4d0b-11ec-a58b-9c7bef452fa0",
+        "status": Status.Failed,
+        "created_at": '2021-11-24T09:44:11.000Z'
+      },
+      {
+        "id": "13a5764e-4d0b-11ec-a58b-9c7bef452fa0",
+        "status": Status.Failed,
+        "created_at": '2021-11-24T09:44:11.000Z'
+      },
+      {
+        "id": "13a5764e-4d0b-11ec-a58b-9c7bef452fa0",
+        "status": Status.Success,
+        "created_at": '2021-11-24T09:44:11.000Z'
       },
     ],
 }
 
 const TableView: React.FC<Props> = (props: React.PropsWithChildren<Props>) => {
+   const [open, setOpen] = React.useState(false);
+    const handleOpen = () => setOpen(true);
+    const handleClose = () => setOpen(false);
 
   return (
     <div className={classes['outerContainer']}>
@@ -65,10 +117,10 @@ const TableView: React.FC<Props> = (props: React.PropsWithChildren<Props>) => {
         <span className={classes['titlesContainer__title']}>Actions</span>
       </div>
       <hr />
-        {props.history?.reports.map((history) => {
+        {history?.reports.map((history, idx) => {
           return (
-            <div className={classes['historyContainer']}>
-              <span className={classes['historyContainer__date']} key={history.id}>
+            <div className={classes['historyContainer']} key={idx}>
+              <span className={classes['historyContainer__date']}>
                 {moment(history.created_at).format('DD/MM/YYYY')}
               </span>
               <span className={classes['historyContainer__status']}>
@@ -83,7 +135,7 @@ const TableView: React.FC<Props> = (props: React.PropsWithChildren<Props>) => {
                 />}
               </span>
               <div className={classes['historyContainer__options']}>
-                <span className={classes['historyContainer__svgWrapper']} key={history.id}>
+                <span className={classes['historyContainer__svgWrapper']}>
                   <Button>
                     {!props.downloadLoadingState ? 
                       <MSvg
@@ -94,74 +146,69 @@ const TableView: React.FC<Props> = (props: React.PropsWithChildren<Props>) => {
                       <CircularProgress className={classes['spinner']} color="inherit" />}
                   </Button>
                 </span>
-                <Button className={classes['openModal']} onClick={props.handleOpen}>
-                  <MSvg
-                    name='popup'
-                    className={classes['svgContainerBlack']} 
-                  />
-                </Button>
-                {history.status === Status.Failed ?
+                {history.status === Status.Failed ?  
+                  <Button onClick={props.handleModalOpen}>
+                    <MSvg
+                      name='popup'
+                      className={classes['svgContainerBlack']} 
+                    />
+                  </Button> :
+                  <Button className={classes['openModal']}>
+                    <MSvg
+                      name='popup'
+                      className={classes['svgContainerGrey']} 
+                    />
+                  </Button>}
                 <Modal
-                  open={props.openState}
-                  onClose={props.handleClose}
+                  open={props.openModalState}
+                  onClose={props.handleModalClose}
                   aria-labelledby="modal-modal-title"
                   aria-describedby="modal-modal-description"
-                >   
+                >
                   <Box className={classes['boxContainer']}>
                     <div className={classes['buttonWrapper']}>
-                      {props.checkUploadState ? !props.runLoadingState ?
-                        <Button 
-                          onClick={props.onRun}
-                          className={classes['buttonWrapper__button']}
-                        >
-                          <label>
-                            <MSvg
-                              name='run'
-                              className={classes['svgModal']}
-                            />
-                            <p className={classes['buttonWrapper__text']}>RUN</p>
+                      {!props.checkUploadState ? 
+                        <Button className={classes['buttonWrapper__button']}>
+                          <label className={classes['buttonWrapper__label']}>
+                              <MSvg
+                                name='run'
+                                className={classes['svgModal']}
+                              />
+                            <p className={classes['buttonWrapper__text']}>RUgergergN</p>
                           </label>
                         </Button> :
-                        <div className={classes['spinnerWraper']}>
-                          <CircularProgress className={classes['spinnerWraper__spinner']} color="inherit" />
-                        </div> : 
-                        <Button className={classes['buttonWrapper__unclickableButton']}>
-                          <label>
-                            <MSvg
-                              name='run'
-                              className={classes['svgModalGrey']}
-                            />
-                            <p className={classes['buttonWrapper__unclickableText']}>RUN</p>
+                        <Button onClick={props.onRun} className={classes['buttonWrapper__button']}>
+                          <label className={classes['buttonWrapper__label']}>
+                            {!props.runLoadingState ? 
+                              <MSvg
+                                name='run'
+                                className={classes['svgModal']}
+                              /> :
+                              <CircularProgress className={classes['spinner']} color="inherit" size={80}/>}
+                            <p className={classes['buttonWrapper__text']}>RUN</p>
                           </label>
                         </Button>}
-                      {!props.uploadLoadingState ?
-                        <Button 
-                          type='button'
-                          className={classes['buttonWrapper__button']}
-                        >
+                      <Button type='button' className={classes['buttonWrapper__button']}>
+                        <label>
+                          {!props.uploadLoadingState ?
                           <label>
                             <input 
                               type='file'
                               accept='.csv'
-                              onChange={props.fileChangeHandler}
+                              onChange={props.onUpload}
                             />
                             <MSvg
                               name='upload'
                               className={classes['svgModal']} 
-                            />
-                            <p className={classes['buttonWrapper__text']}>UPLOAD</p>
-                          </label>
-                        </Button> :
-                      <div className={classes['spinnerWraper']}>
-                        <CircularProgress className={classes['spinnerWraper__spinner']} color="inherit" style={{ alignSelf: 'center' }} />
-                      </div>}
+                            /> 
+                          </label> :
+                          <CircularProgress className={classes['spinner']} color="inherit" size={80} />}
+                          <p className={classes['buttonWrapper__text']}>UPLOAD</p>
+                        </label>
+                      </Button>
                     </div>
                   </Box>
-                </Modal> :
-                <MSvg
-                  name='popup'
-                  className={classes['svgContainerGrey']} 
-                />}
+                </Modal>
               </div>
             </div>
           )

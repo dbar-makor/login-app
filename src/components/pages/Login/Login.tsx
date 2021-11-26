@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { ChangeEvent, useState } from 'react';
 import { useHistory } from 'react-router';
 
 import { AxiosError, AxiosResponse } from 'axios';
@@ -22,8 +22,8 @@ const Login: React.FC<Props> = (props: React.PropsWithChildren<Props>) => {
 
   const history = useHistory();
 
-  const usernameChangeHandler = (username: any) => setUsernameState(username.target.value);
-  const passwordChangeHandler = (password: any) => setPasswordState(password.target.value);
+  const usernameChangeHandler = (username: ChangeEvent<HTMLInputElement>) => setUsernameState(username.target.value);
+  const passwordChangeHandler = (password: ChangeEvent<HTMLInputElement>) => setPasswordState(password.target.value);
 
   const submitHandler = (e: React.FormEvent) => {
     e.preventDefault();
@@ -46,10 +46,10 @@ const Login: React.FC<Props> = (props: React.PropsWithChildren<Props>) => {
       iconName={props.iconName}
       username={usernameState}
       password={passwordState}
-      error={errorState}
       usernameChangeHandler={usernameChangeHandler}
       passwordChangeHandler={passwordChangeHandler}
       submitHandler={submitHandler}
+      error={errorState}
     >{props.children}</LoginView>
   );
 };
