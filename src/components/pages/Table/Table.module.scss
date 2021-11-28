@@ -43,7 +43,6 @@ input[type="file"] {
   align-self: center;
   width: 9vh;
   height: 9vh;
-  // cursor: pointer;
 }
 
 .svgModalGrey {
@@ -51,8 +50,7 @@ input[type="file"] {
   width: 9vh;
   height: 9vh;
   filter: invert(16%) sepia(9%) saturate(8%) hue-rotate(357deg) brightness(93%) contrast(20%);
-  // cursor: context-menu !important;
-
+  
   &:hover {
     background-color: none !important;
   }

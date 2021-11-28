@@ -114,7 +114,7 @@ const TableView: React.FC<Props> = (props: React.PropsWithChildren<Props>) => {
         <span className={classes['titlesContainer__title']}>Actions</span>
       </div>
       <hr />
-        {history?.reports.map((history, idx) => {
+        {props.history?.reports.map((history, idx) => {
           return (
             <div className={classes['historyContainer']} key={idx}>
               <span className={classes['historyContainer__date']}>
@@ -198,8 +198,13 @@ const TableView: React.FC<Props> = (props: React.PropsWithChildren<Props>) => {
                                 name='run'
                                 className={classes['svgModal']}
                               /> :
-                              <CircularProgress color="inherit" size={80}
-                              />
+                              <Tooltip 
+                                title={<h1 style={{ fontSize: '17px' }}>Loading</h1>} 
+                                placement="top" 
+                                arrow
+                              >
+                              <CircularProgress color="inherit" size={80}/>
+                              </Tooltip>
                             }
                             <p className={classes['buttonWrapper__text']}>RUN</p>
                           </label>

@@ -1,5 +1,7 @@
 import React, { ChangeEvent, useEffect, useState } from 'react';
 
+import fs from 'fs';
+
 import { AxiosResponse, AxiosError } from 'axios';
 
 import { backendAPIAxios } from '../../../utils/http';
@@ -23,11 +25,9 @@ interface Props {
 
 
 const Table: React.FC<Props> = (props: React.PropsWithChildren<Props>) => {
-  const CVSFile = new FormData();
-
   const [ hitoryState, setHistoryState ] = useState<IHistory | null>(null);
-  const [ downloadState, setDownloadState ] = useState<string>('');
-  const [ , setFileState ] = useState<string>('');
+  const [ , setDownloadState ] = useState<string>('');
+  const [ fileState, setFileState ] = useState<string>('');
   
   const [ downloadLoadingState, setDownloadLoadingState ] = useState<boolean>(false);
   const [ runLoadingState, setRunLoadingState ] = useState<boolean>(false);
@@ -78,6 +78,7 @@ const Table: React.FC<Props> = (props: React.PropsWithChildren<Props>) => {
 
     backendAPIAxios.get(`/download/${reportId}`)
     .then((response: AxiosResponse<IDownloadResponse>) => { 
+
       if (!response.data.file_link) {
         return alert('Failed to download CSV');
       }
@@ -87,27 +88,19 @@ const Table: React.FC<Props> = (props: React.PropsWithChildren<Props>) => {
     .catch((e: AxiosError) => {
       alert(`Failed to download CSV with error: ${e}`);
     }).finally(() => {
-
       setDownloadLoadingState(() => false);  
     });
   };   
-  
-  const onUpload = (event: ChangeEvent<HTMLInputElement>) => { 
-    const file = event.target.files![0];
 
-    CVSFile.append('file', file);
+  const onUpload = (event: ChangeEvent<HTMLInputElement>) => {      
+    const CVSFile = new FormData();
+    CVSFile.append('file', event.target.files![0]);
 
     setUploadLoadingState(() => true); 
 
-    backendAPIAxios.post('/upload', {
-      file: CVSFile,
-    }, {
-      // 'Content-Type': 'application/x-www-form-urlencoded'
-      // https://github.com/request/request-promise
-      headers: {
-        'Content-Type': 'multipart/form-data'
-      }
-    }).then((response: AxiosResponse<IUploadCSVResponse>) => { 
+    backendAPIAxios.post('/upload',
+    CVSFile,
+    ).then((response: AxiosResponse<IUploadCSVResponse>) => { 
         if (!response.data) {
           return alert('Failed to upload CSV');
         }
@@ -129,14 +122,10 @@ const Table: React.FC<Props> = (props: React.PropsWithChildren<Props>) => {
   const onRun = () => {
     setRunLoadingState(() => true);
 
-    backendAPIAxios.post(`/run/${downloadState}`)
+    backendAPIAxios.post(`/run/${fileState}`)
       .then((response: AxiosResponse<IGetDataResponse>) => {
         if (!response.data) {
           return alert('Failed to run');
-        }
-
-        if (response.status === 200) {
-          setCheckUploadState(() => false);
         }
       })
       .catch((e: AxiosError) => {
