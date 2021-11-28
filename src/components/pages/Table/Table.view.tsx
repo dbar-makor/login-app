@@ -1,4 +1,4 @@
-import React, { ChangeEvent } from 'react';
+import React, { ChangeEvent, useState } from 'react';
 
 import moment from 'moment';
 
@@ -21,7 +21,7 @@ import classes from './Table.module.scss';
 
 interface Props {
   readonly iconName?: keyof typeof icons;
-  readonly history: IHistory | null;
+  readonly hitoryState: IHistory | null;
   readonly onDownload: (reportId: string) => void;
   readonly onRun: () => void;
   readonly onUpload: (value: ChangeEvent<HTMLInputElement>) => void;
@@ -105,6 +105,7 @@ const history: IHistory = {
 }
 
 const TableView: React.FC<Props> = (props: React.PropsWithChildren<Props>) => {
+  const [ tate, te ] = useState<boolean>(false);
 
   return (
     <div className={classes['outerContainer']}>
@@ -114,7 +115,7 @@ const TableView: React.FC<Props> = (props: React.PropsWithChildren<Props>) => {
         <span className={classes['titlesContainer__title']}>Actions</span>
       </div>
       <hr />
-        {props.history?.reports.map((history, idx) => {
+        {props.hitoryState?.reports.map((history, idx) => {
           return (
             <div className={classes['historyContainer']} key={idx}>
               <span className={classes['historyContainer__date']}>
@@ -134,12 +135,28 @@ const TableView: React.FC<Props> = (props: React.PropsWithChildren<Props>) => {
               </span>
               <div className={classes['historyContainer__options']}>
                 <span className={classes['historyContainer__svgWrapper']}>
-                  <Button>
-                    {!props.downloadLoadingState ? 
+                  {/* <Button>
+                    {!props.downloadLoadingState ?
                         <MSvg
                           name='download'
                           className={classes['svgContainerBlack']} 
                           onClick={() => props.onDownload(history.id!)}
+                        /> :
+                      <Tooltip title={<h1 style={{ fontSize: '17px' }}>Loading</h1>} placement="left" arrow>
+                        <CircularProgress color="inherit" />
+                      </Tooltip>
+                    }
+                  </Button> */}
+                  <Button>
+                    {!props.downloadLoadingState ?
+                        <MSvg
+                          name='download'
+                          className={classes['svgContainerBlack']} 
+                          onClick={() => {
+                            te(true)
+                            props.onDownload(history.id!).finally(() => te(true))
+                          }
+                        }
                         /> :
                       <Tooltip title={<h1 style={{ fontSize: '17px' }}>Loading</h1>} placement="left" arrow>
                         <CircularProgress color="inherit" />
@@ -175,7 +192,32 @@ const TableView: React.FC<Props> = (props: React.PropsWithChildren<Props>) => {
                 >
                   <Box className={classes['boxContainer']}>
                     <div className={classes['buttonWrapper']}>
-                      {!props.checkUploadState ? 
+                      <Button type='button' className={classes['buttonWrapper__button']}>
+                        <label className={classes['buttonWrapper__label']}>
+                          {!props.uploadLoadingState ?
+                            <label className={classes['buttonWrapper__label']}>
+                              <input 
+                                type='file'
+                                accept='.csv'
+                                onChange={props.onUpload}
+                              />
+                              <MSvg
+                                name='upload'
+                                className={classes['svgModal']} 
+                              /> 
+                            </label> :
+                            <Tooltip 
+                              title={<h1 style={{ fontSize: '17px' }}>Loading</h1>} 
+                              placement="top" 
+                              arrow
+                            >
+                              <CircularProgress color="inherit" size={80}/>
+                            </Tooltip>
+                          }
+                          <p className={classes['buttonWrapper__text']}>STEP 1: UPLOAD</p>
+                        </label>
+                      </Button>
+                      {!props.checkUploadState ?
                         <Tooltip 
                           title={<h1 style={{ fontSize: '17px' }}>Unable to run, no file uploaded</h1>} 
                           placement="top" 
@@ -185,9 +227,9 @@ const TableView: React.FC<Props> = (props: React.PropsWithChildren<Props>) => {
                             <label className={classes['buttonWrapper__label']}>
                                 <MSvg
                                   name='run'
-                                  className={classes['svgModalGrey']}
+                                  className={classes['svgModalRed']}
                                 />
-                              <p className={classes['buttonWrapper__unclickableText']}>RUN</p>
+                              <p className={classes['buttonWrapper__unclickableText']}>STEP2: RUN</p>
                             </label>
                           </Button>
                         </Tooltip> :
@@ -206,35 +248,10 @@ const TableView: React.FC<Props> = (props: React.PropsWithChildren<Props>) => {
                               <CircularProgress color="inherit" size={80}/>
                               </Tooltip>
                             }
-                            <p className={classes['buttonWrapper__text']}>RUN</p>
+                            <p className={classes['buttonWrapper__text']}>STEP 2: RUN</p>
                           </label>
                         </Button>
                       }
-                      <Button type='button' className={classes['buttonWrapper__button']}>
-                        <label className={classes['buttonWrapper__label']}>
-                          {!props.uploadLoadingState ?
-                            <label className={classes['buttonWrapper__label']}>
-                              <input 
-                                type='file'
-                                accept='.csv'
-                                onChange={props.onUpload}
-                              />
-                              <MSvg
-                                name='upload'
-                                className={classes['svgModal']} 
-                                /> 
-                            </label> :
-                            <Tooltip 
-                              title={<h1 style={{ fontSize: '17px' }}>Loading</h1>} 
-                              placement="top" 
-                              arrow
-                            >
-                              <CircularProgress color="inherit" size={80}/>
-                            </Tooltip>
-                          }
-                          <p className={classes['buttonWrapper__text']}>UPLOAD</p>
-                        </label>
-                      </Button>
                     </div>
                   </Box>
                 </Modal>

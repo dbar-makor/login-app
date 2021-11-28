@@ -1,7 +1,5 @@
 import React, { ChangeEvent, useEffect, useState } from 'react';
 
-import fs from 'fs';
-
 import { AxiosResponse, AxiosError } from 'axios';
 
 import { backendAPIAxios } from '../../../utils/http';
@@ -74,6 +72,7 @@ const Table: React.FC<Props> = (props: React.PropsWithChildren<Props>) => {
   }, [setHistoryState])
   
   const onDownland = (reportId: string) => {
+
     setDownloadLoadingState(() => true);
 
     backendAPIAxios.get(`/download/${reportId}`)
@@ -129,7 +128,8 @@ const Table: React.FC<Props> = (props: React.PropsWithChildren<Props>) => {
         }
       })
       .catch((e: AxiosError) => {
-        alert(`Failed to run with error: ${e}`);
+        // alert(`Failed to run with error: ${e}`);
+        console.log(e)
       }).finally(() => {
         setRunLoadingState(() => false);
       });
@@ -138,7 +138,7 @@ const Table: React.FC<Props> = (props: React.PropsWithChildren<Props>) => {
   return (
     <TableView
       iconName={props.iconName}
-      history={hitoryState}
+      hitoryState={hitoryState}
       onDownload={onDownland}
       onRun={onRun}
       onUpload={onUpload}

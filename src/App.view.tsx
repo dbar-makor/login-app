@@ -3,7 +3,6 @@ import {
   Switch,
   Route,
   BrowserRouter,
-  Redirect,
 } from 'react-router-dom';
 
 const Login = React.lazy(() => import('./components/pages/Login/Login'));
