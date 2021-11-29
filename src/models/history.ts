@@ -7,7 +7,3 @@ export interface IHistory {
     created_at?: string;
   }[];
 };
-
-export interface ICSV {
-    readonly file: string,
-};
