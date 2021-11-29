@@ -1,13 +1,5 @@
 import { Status } from '../shared/enum';
 
-// export interface IHistoryResponse {
-//   reports: Readonly<{
-//     readonly id?: string,
-//     readonly status?: Status,
-//     readonly created_at?: Date,
-//   }>
-// }[];
-
 export interface IHistoryResponse {
   reports: {
     id?: string;
