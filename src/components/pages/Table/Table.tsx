@@ -28,6 +28,7 @@ const Table: React.FC<Props> = (props: React.PropsWithChildren<Props>) => {
   const [ fileState, setFileState ] = useState<string>('');
   
   const [ downloadLoadingState, setDownloadLoadingState ] = useState<boolean>(false);
+  const [ currentSelectedRowIdState, setCurrentSelectedRowIdState ] = useState<string>('');
   const [ runLoadingState, setRunLoadingState ] = useState<boolean>(false);
   const [ uploadLoadingState, setUploadLoadingState ] = useState<boolean>(false);
 
@@ -59,7 +60,7 @@ const Table: React.FC<Props> = (props: React.PropsWithChildren<Props>) => {
         setHistoryState(() => response.data);
       })
       .catch((e: AxiosError) => {
-        // alert(`Failed to get history with error: ${e}`);
+        alert(`Failed to get history with error: ${e}`);
       });
       
     } catch (e) {
@@ -74,6 +75,7 @@ const Table: React.FC<Props> = (props: React.PropsWithChildren<Props>) => {
   const onDownland = (reportId: string) => {
 
     setDownloadLoadingState(() => true);
+    setCurrentSelectedRowIdState(reportId);
 
     backendAPIAxios.get(`/download/${reportId}`)
     .then((response: AxiosResponse<IDownloadResponse>) => { 
@@ -128,8 +130,7 @@ const Table: React.FC<Props> = (props: React.PropsWithChildren<Props>) => {
         }
       })
       .catch((e: AxiosError) => {
-        // alert(`Failed to run with error: ${e}`);
-        console.log(e)
+        alert(`Failed to run with error: ${e}`);
       }).finally(() => {
         setRunLoadingState(() => false);
       });
@@ -142,6 +143,7 @@ const Table: React.FC<Props> = (props: React.PropsWithChildren<Props>) => {
       onDownload={onDownland}
       onRun={onRun}
       onUpload={onUpload}
+      currentSelectedRowIdState={currentSelectedRowIdState}
       openModalState={openModalState}
       handleModalOpen={handleModalOpen}
       handleModalClose={handleModalClose}

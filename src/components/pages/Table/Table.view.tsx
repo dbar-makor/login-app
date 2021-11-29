@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useState } from 'react';
+import React, { ChangeEvent } from 'react';
 
 import moment from 'moment';
 
@@ -32,80 +32,10 @@ interface Props {
   readonly runLoadingState: boolean;
   readonly uploadLoadingState: boolean;
   readonly checkUploadState: boolean;
-}
-
-const history: IHistory = {
-        "reports": [
-      {
-        "id": "13a5764e-4d0b-11ec-a58b-9c7bef452fa0",
-        "status": Status.Failed,
-        "created_at": '2021-11-24T09:44:11.000Z'
-      },
-      {
-        "id": "13a5764e-4d0b-11ec-a58b-9c7bef452fa0",
-        "status": Status.Success,
-        "created_at": '2021-11-24T09:44:11.000Z'
-      },
-      {
-        "id": "13a5764e-4d0b-11ec-a58b-9c7bef452fa0",
-        "status": Status.Success,
-        "created_at": '2021-11-24T09:44:11.000Z'
-      },
-      {
-        "id": "13a5764e-4d0b-11ec-a58b-9c7bef452fa0",
-        "status": Status.Failed,
-        "created_at": '2021-11-24T09:44:11.000Z'
-      },
-      {
-        "id": "13a5764e-4d0b-11ec-a58b-9c7bef452fa0",
-        "status": Status.Failed,
-        "created_at": '2021-11-24T09:44:11.000Z'
-      },
-      {
-        "id": "13a5764e-4d0b-11ec-a58b-9c7bef452fa0",
-        "status": Status.Failed,
-        "created_at": '2021-11-24T09:44:11.000Z'
-      },
-      {
-        "id": "13a5764e-4d0b-11ec-a58b-9c7bef452fa0",
-        "status": Status.Success,
-        "created_at": '2021-11-24T09:44:11.000Z'
-      },
-      {
-        "id": "13a5764e-4d0b-11ec-a58b-9c7bef452fa0",
-        "status": Status.Failed,
-        "created_at": '2021-11-24T09:44:11.000Z'
-      },
-      {
-        "id": "13a5764e-4d0b-11ec-a58b-9c7bef452fa0",
-        "status": Status.Failed,
-        "created_at": '2021-11-24T09:44:11.000Z'
-      },
-      {
-        "id": "13a5764e-4d0b-11ec-a58b-9c7bef452fa0",
-        "status": Status.Success,
-        "created_at": '2021-11-24T09:44:11.000Z'
-      },
-      {
-        "id": "13a5764e-4d0b-11ec-a58b-9c7bef452fa0",
-        "status": Status.Failed,
-        "created_at": '2021-11-24T09:44:11.000Z'
-      },
-      {
-        "id": "13a5764e-4d0b-11ec-a58b-9c7bef452fa0",
-        "status": Status.Failed,
-        "created_at": '2021-11-24T09:44:11.000Z'
-      },
-      {
-        "id": "13a5764e-4d0b-11ec-a58b-9c7bef452fa0",
-        "status": Status.Success,
-        "created_at": '2021-11-24T09:44:11.000Z'
-      },
-    ],
+  readonly currentSelectedRowIdState: string;
 }
 
 const TableView: React.FC<Props> = (props: React.PropsWithChildren<Props>) => {
-  const [ tate, te ] = useState<boolean>(false);
 
   return (
     <div className={classes['outerContainer']}>
@@ -135,32 +65,16 @@ const TableView: React.FC<Props> = (props: React.PropsWithChildren<Props>) => {
               </span>
               <div className={classes['historyContainer__options']}>
                 <span className={classes['historyContainer__svgWrapper']}>
-                  {/* <Button>
-                    {!props.downloadLoadingState ?
-                        <MSvg
-                          name='download'
-                          className={classes['svgContainerBlack']} 
-                          onClick={() => props.onDownload(history.id!)}
-                        /> :
-                      <Tooltip title={<h1 style={{ fontSize: '17px' }}>Loading</h1>} placement="left" arrow>
-                        <CircularProgress color="inherit" />
-                      </Tooltip>
-                    }
-                  </Button> */}
                   <Button>
-                    {!props.downloadLoadingState ?
-                        <MSvg
-                          name='download'
-                          className={classes['svgContainerBlack']} 
-                          onClick={() => {
-                            te(true)
-                            props.onDownload(history.id!).finally(() => te(true))
-                          }
-                        }
-                        /> :
+                    {props.downloadLoadingState && props.currentSelectedRowIdState === history.id ?
                       <Tooltip title={<h1 style={{ fontSize: '17px' }}>Loading</h1>} placement="left" arrow>
                         <CircularProgress color="inherit" />
-                      </Tooltip>
+                      </Tooltip> :
+                      <MSvg
+                        name='download'
+                        className={classes['svgContainerBlack']} 
+                        onClick={() => props.onDownload(history.id!)}
+                      />
                     }
                   </Button>
                 </span>
@@ -229,7 +143,7 @@ const TableView: React.FC<Props> = (props: React.PropsWithChildren<Props>) => {
                                   name='run'
                                   className={classes['svgModalRed']}
                                 />
-                              <p className={classes['buttonWrapper__unclickableText']}>STEP2: RUN</p>
+                              <p className={classes['buttonWrapper__unclickableText']}>STEP 2: RUN</p>
                             </label>
                           </Button>
                         </Tooltip> :
